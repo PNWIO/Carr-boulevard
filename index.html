@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carr Boulevard Development | 38-Unit Mixed-Use Townhomes | Bremerton, WA</title>
+    <meta name="description" content="Carr Boulevard Development: 38-unit attached townhome community with mixed-use retail in Bremerton, WA. Fully entitled by end of 2026. Shovel-ready for forward-thinking developers.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #2c3e50;
+            line-height: 1.6;
+            background-color: #fafafa;
+        }
+
+        header {
+            background-color: #1a3a52;
+            color: #f5f1e8;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #d4af86;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #f5f1e8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #d4af86;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1a3a52 0%, #2c5aa0 100%);
+            color: #f5f1e8;
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(212, 175, 134, 0.05);
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: #d4af86;
+            font-weight: 500;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 750px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button, .btn {
+            padding: 1rem 2.2rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #d4af86;
+            color: #1a3a52;
+        }
+
+        .btn-primary:hover {
+            background-color: #e5c9a8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 134, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #f5f1e8;
+            border: 2px solid #f5f1e8;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f5f1e8;
+            color: #1a3a52;
+        }
+
+        .btn-download {
+            background-color: #1a3a52;
+            color: #d4af86;
+            border: 2px solid #d4af86;
+            font-size: 0.9rem;
+        }
+
+        .btn-download:hover {
+            background-color: #d4af86;
+            color: #1a3a52;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 4rem 0;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #1a3a52;
+            font-weight: 700;
+        }
+
+        section h3 {
+            font-size: 1.4rem;
+            color: #1a3a52;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        /* Rendering Gallery Sections */
+        .rendering-section {
+            background-color: #fff;
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .rendering-large {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #e8dcc8 0%, #d4c5b9 100%);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #999;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rendering-large::before {
+            content: '🏘️';
+            font-size: 80px;
+            opacity: 0.1;
+            position: absolute;
+        }
+
+        .rendering-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .rendering-card {
+            background: linear-gradient(135deg, #f0e6d2 0%, #e8dcc8 100%);
+            aspect-ratio: 4/3;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rendering-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .rendering-card::before {
+            content: '📐';
+            font-size: 60px;
+            opacity: 0.1;
+            position: absolute;
+        }
+
+        .rendering-label {
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Key Stats */
+        .stats {
+            background-color: #fff;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background-color: #f9f7f3;
+            border-left: 4px solid #d4af86;
+            border-radius: 2px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #d4af86;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Project Overview */
+        .overview {
+            background-color: #fff;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .overview-text ul {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .overview-text li {
+            padding: 0.7rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            color: #555;
+        }
+
+        .overview-text li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #d4af86;
+            font-weight: bold;
+        }
+
+        .overview-image {
+            background: linear-gradient(135deg, #f0e6d2 0%, #e8dcc8 100%);
+            padding: 3rem 2rem;
+            border-radius: 4px;
+            text-align: center;
+            color: #999;
+            font-size: 1.1rem;
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        /* Unit Types */
+        .unit-types {
+            background-color: #f9f7f3;
+        }
+
+        .unit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        .unit-card {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .unit-card h4 {
+            color: #1a3a52;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .unit-card .unit-size {
+            color: #d4af86;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .unit-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            background-color: #fff;
+        }
+
+        .timeline-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            background-color: #f9f7f3;
+            border-left: 4px solid #d4af86;
+            border-radius: 2px;
+        }
+
+        .timeline-item.completed {
+            background-color: #e8f5e9;
+            border-left-color: #66bb6a;
+        }
+
+        .timeline-item h4 {
+            color: #1a3a52;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .timeline-badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            background-color: #d4af86;
+            color: #1a3a52;
+            font-weight: 600;
+        }
+
+        .timeline-item.completed .timeline-badge {
+            background-color: #66bb6a;
+            color: #fff;
+        }
+
+        .timeline-item p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Why Carr Boulevard */
+        .why-carr {
+            background-color: #f9f7f3;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .benefit-card h4 {
+            color: #1a3a52;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .benefit-card p {
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Downloads Section */
+        .downloads {
+            background-color: #fff;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .download-card {
+            background-color: #f9f7f3;
+            padding: 2rem;
+            border-radius: 4px;
+            border-left: 4px solid #d4af86;
+            text-align: center;
+        }
+
+        .download-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .download-card h4 {
+            color: #1a3a52;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .download-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            background-color: #1a3a52;
+            color: #f5f1e8;
+            text-align: center;
+        }
+
+        .contact h2 {
+            color: #f5f1e8;
+        }
+
+        .contact p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #d4af86;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .contact-item h4 {
+            color: #d4af86;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: #f5f1e8;
+        }
+
+        .contact-item a {
+            color: #d4af86;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: #f5f1e8;
+        }
+
+        footer {
+            background-color: #0f2337;
+            color: #999;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.1rem;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section h2 {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button, .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .rendering-large {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Carr Boulevard</div>
+            <ul>
+                <li><a href="#renderings">Renderings</a></li>
+                <li><a href="#overview">Project</a></li>
+                <li><a href="#units">Units</a></li>
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#downloads">Downloads</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Carr Boulevard Development</h1>
+            <p class="subtitle">38-Unit Mixed-Use Townhome Community • Bremerton, WA</p>
+            <p>An entitled, shovel-ready residential development opportunity. Fully entitled by end of 2026. Prime location. Forward-thinking design. Ready for your vision.</p>
+            <div class="cta-buttons">
+                <a href="#downloads" class="btn btn-primary">Download Project Details</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">38</div>
+                    <div class="stat-label">Attached Units</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Unit Types</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3.72</div>
+                    <div class="stat-label">Acres (Total Site)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">Q1 2027</div>
+                    <div class="stat-label">Ready to Break Ground</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="rendering-section" id="renderings">
+        <div class="container">
+            <div class="section-title">
+                <h2>Master Plan & Site Renderings</h2>
+                <p style="font-size: 1.1rem; color: #666; max-width: 700px; margin: 0 auto;">High-resolution site plan and professional renderings available upon request from qualified developers and builders.</p>
+            </div>
+            
+            <div class="rendering-large">
+                Site Master Plan & Aerial Rendering
+            </div>
+
+            <div style="margin-top: 3rem; margin-bottom: 2rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem;">Project Visualization</h3>
+                <div class="rendering-grid">
+                    <div class="rendering-card">
+                        <div class="rendering-label">Site Plan View</div>
+                    </div>
+                    <div class="rendering-card">
+                        <div class="rendering-label">Master Plan & Infrastructure</div>
+                    </div>
+                    <div class="rendering-card">
+                        <div class="rendering-label">Community Perspective</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="overview" id="overview">
+        <div class="container">
+            <h2>Project Overview</h2>
+            <div class="overview-grid">
+                <div class="overview-text">
+                    <h3>A Development Ready to Move</h3>
+                    <p>Carr Boulevard represents a rare opportunity in Kitsap County: a fully permitted, mixed-use residential development on a shovel-ready site. We've handled the entitlements. Now it's ready for builders who see the opportunity.</p>
+                    <ul>
+                        <li>32 residential townhome lots</li>
+                        <li>1 mixed-use commercial parcel</li>
+                        <li>Professional open space and stormwater management</li>
+                        <li>Six distinct, market-tested unit types</li>
+                        <li>Modern landscape plan, native plantings, City of Bremerton approved</li>
+                        <li>Fully entitled — all municipal reviews complete</li>
+                        <li>Civil engineering by N.L. Olson & Associates</li>
+                    </ul>
+                    <p><strong>Location:</strong> Bremerton, Kitsap County, Washington — strong regional market, proximity to employment centers and urban amenities.</p>
+                </div>
+                <div class="overview-image">
+                    Site Context & Location Map<br><span style="font-size: 0.85rem; color: #bbb;">High-resolution map available upon request</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="rendering-section">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 2.5rem;">Unit Type Renderings</h2>
+            <div class="rendering-grid">
+                <div class="rendering-card">
+                    <div class="rendering-label">Type A Unit Rendering</div>
+                </div>
+                <div class="rendering-card">
+                    <div class="rendering-label">Type B Unit Rendering</div>
+                </div>
+                <div class="rendering-card">
+                    <div class="rendering-label">Type C Unit Rendering</div>
+                </div>
+                <div class="rendering-card">
+                    <div class="rendering-label">Type D Unit Rendering</div>
+                </div>
+                <div class="rendering-card">
+                    <div class="rendering-label">Type E Unit Rendering</div>
+                </div>
+                <div class="rendering-card">
+                    <div class="rendering-label">Commercial Parcel Rendering</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="unit-types" id="units">
+        <div class="container">
+            <h2>Six Unit Types Built for Market</h2>
+            <p style="text-align: center; color: #666; max-width: 700px; margin: 0 auto 2rem;">Each unit type has been developed with end-user and builder economics in mind. Mix and match across the 38 units to optimize your development strategy.</p>
+            <div class="unit-grid">
+                <div class="unit-card">
+                    <h4>Type A</h4>
+                    <div class="unit-size">3BR / 2.5BA</div>
+                    <p>Entry-level townhome with efficient open plan. Ground-floor den. Two-car garage.</p>
+                </div>
+                <div class="unit-card">
+                    <h4>Type B</h4>
+                    <div class="unit-size">3BR / 2.5BA</div>
+                    <p>Mid-market offering with upgraded finish package. Primary suite with walk-in closet. Patio space.</p>
+                </div>
+                <div class="unit-card">
+                    <h4>Type C</h4>
+                    <div class="unit-size">4BR / 3BA</div>
+                    <p>Family-focused design. Second-floor flex room. Ground-floor office/den. Two-car garage.</p>
+                </div>
+                <div class="unit-card">
+                    <h4>Type D</h4>
+                    <div class="unit-size">3BR / 2.5BA</div>
+                    <p>Premium townhome. Cathedral ceilings. Primary suite on upper level. Rooftop deck option.</p>
+                </div>
+                <div class="unit-card">
+                    <h4>Type E</h4>
+                    <div class="unit-size">4BR / 3BA</div>
+                    <p>Upper-level market offering. Two primary suites. Oversized garage. Premium finishes throughout.</p>
+                </div>
+                <div class="unit-card">
+                    <h4>Commercial Parcel</h4>
+                    <div class="unit-size">Mixed-Use</div>
+                    <p>Ground-floor retail/services. Upper-level residential or office. Street-facing presence and activation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="timeline" id="timeline">
+        <div class="container">
+            <h2>Project Timeline</h2>
+            <div class="timeline-content">
+                <div class="timeline-item completed">
+                    <h4>
+                        Preliminary Plat Approved
+                        <span class="timeline-badge">Complete</span>
+                    </h4>
+                    <p>City of Bremerton preliminary plat review completed. Project No. 25-13629 on file.</p>
+                </div>
+                <div class="timeline-item completed">
+                    <h4>
+                        Landscape Plan & Civil Engineering
+                        <span class="timeline-badge">Complete</span>
+                    </h4>
+                    <p>Professional civil engineering (N.L. Olson & Associates) and permit-ready landscape plan finalized. Native plantings. Full Bremerton code compliance.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>
+                        Final Plat & Development Agreement
+                        <span class="timeline-badge">Q4 2026</span>
+                    </h4>
+                    <p>Final plat recording and municipal development agreement execution. All municipal conditions satisfied. Site fully entitled.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>
+                        Ready to Break Ground
+                        <span class="timeline-badge">Q1 2027</span>
+                    </h4>
+                    <p>Site infrastructure construction can commence. Builder ready to move forward with residential units and commercial activation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="why-carr">
+        <div class="container">
+            <h2>Why Carr Boulevard</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <h4>Entitled & Derisked</h4>
+                    <p>Preliminary plat approved. All municipal reviews completed. No surprises. No extended permitting timelines. Move forward with confidence.</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>Market Location</h4>
+                    <p>Bremerton offers strong residential demand, proximity to employment hubs, and regional growth. Strategic positioning for multi-family and mixed-use development.</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>Professional Planning</h4>
+                    <p>Site developed by land entitlement specialists. Approved by City of Bremerton. Designed for buildability and market economics.</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>Flexible Mix</h4>
+                    <p>Six distinct unit types. Adapt your build-out to market conditions and your timeline. Optimize pricing and absorption strategy.</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>Commercial Activation</h4>
+                    <p>Mixed-use parcel designed for street-facing retail, services, or office. Add community value and economic vitality.</p>
+                </div>
+                <div class="benefit-card">
+                    <h4>Shovel-Ready Infrastructure</h4>
+                    <p>Stormwater management, open space, and site planning approved. Infrastructure ready for construction phase.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="downloads" id="downloads">
+        <div class="container">
+            <h2>Project Documents & Downloads</h2>
+            <p style="text-align: center; color: #666; max-width: 700px; margin: 0 auto 2rem; font-size: 1.05rem;">Access detailed project information, specifications, and market analysis. Request the full package for qualified developers and builders.</p>
+            
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">📄</div>
+                    <h4>Project Fact Sheet</h4>
+                    <p>One-page project overview with key statistics, unit mix, timeline, and contact information.</p>
+                    <a href="Carr_Boulevard_Project_Fact_Sheet.pdf" class="btn btn-download" download>Download PDF</a>
+                </div>
+                <div class="download-card">
+                    <div class="download-icon">📐</div>
+                    <h4>Site Plan & Specifications</h4>
+                    <p>Full site plan, civil engineering drawings, and landscape plan. Available upon request.</p>
+                    <a href="#contact" class="btn btn-download">Request Documents</a>
+                </div>
+                <div class="download-card">
+                    <div class="download-icon">📊</div>
+                    <h4>Market Analysis & Proforma</h4>
+                    <p>Comprehensive market analysis, unit economics, and development proforma for qualified buyers.</p>
+                    <a href="#contact" class="btn btn-download">Request Analysis</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Get in Touch</h2>
+            <p>Ready to move forward? We have detailed site plans, proformas, unit specifications, and market analysis available for qualified developers and builders.</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>Email</h4>
+                    <p><a href="mailto:info@laughlindevelopmentllc.com">info@laughlindevelopmentllc.com</a></p>
+                </div>
+                <div class="contact-item">
+                    <h4>Phone</h4>
+                    <p><a href="tel:+13605551234">(360) 555-1234</a></p>
+                </div>
+                <div class="contact-item">
+                    <h4>Location</h4>
+                    <p>Bremerton, Kitsap County, WA</p>
+                </div>
+            </div>
+            <a href="mailto:info@laughlindevelopmentllc.com?subject=Carr%20Boulevard%20Development%20-%20Full%20Project%20Package%20Request" class="btn btn-primary">Request Full Project Package</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Laughlin Development LLC. Carr Boulevard Development. All rights reserved.</p>
+        <p>Project No. 25-13629 | City of Bremerton | Bremerton, Washington</p>
+    </footer>
+</body>
+</html>
