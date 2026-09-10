@@ -1,0 +1,215 @@
+---
+import { getCollection } from "astro:content";
+import { footprintFamilies, program } from "~/data/project";
+import type { FamilyKey } from "~/data/project";
+
+const raw = await getCollection("units");
+const units = raw
+  .map((u) => u.data)
+  .sort((a, b) => (a.parcel === b.parcel ? a.lot - b.lot : a.parcel === 1 ? -1 : 1));
+
+const fam = footprintFamilies;
+const byKey = Object.fromEntries(Object.values(fam).map((f) => [f.key, f])) as Record<FamilyKey, (typeof fam)[1080]>;
+const filters = Object.values(fam).sort((a, b) => b.units - a.units);
+---
+
+<section id="unit-schedule" class="section-tight matrix" aria-labelledby="matrix-h">
+  <div class="shell">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Unit schedule</p>
+        <h2 id="matrix-h" class="display-l">All {program.totalUnits} lots.</h2>
+      </div>
+      <p class="note">
+        Footprint dimensions are building footprints from the preliminary set, not finished
+        area. Finished square footage for each plan is in the architecture set in the data room.
+      </p>
+    </div>
+
+    <div class="controls">
+      <div class="chips" role="group" aria-label="Filter by plan footprint">
+        <button type="button" class="chip is-on" data-filter="all" aria-pressed="true">
+          All <span>{units.length}</span>
+        </button>
+        {filters.map((f) => (
+          <button type="button" class="chip" data-filter={f.key} aria-pressed="false">
+            {f.footprint} <span>{f.units}</span>
+          </button>
+        ))}
+      </div>
+      <p class="count" data-count aria-live="polite">Showing all {units.length} lots</p>
+    </div>
+
+    <div class="scroll-x table-wrap">
+      <table data-matrix>
+        <caption class="sr">
+          Unit schedule for the Carr Boulevard preliminary plat. Sortable by lot, parcel,
+          footprint, bedrooms and garage.
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col" aria-sort="ascending"><button type="button" data-sort="lot">Lot<span aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" data-sort="parcel">Parcel<span aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" data-sort="plan">Plan<span aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" data-sort="fp">Footprint<span aria-hidden="true"></span></button></th>
+            <th scope="col" class="num"><button type="button" data-sort="sf">Footprint SF<span aria-hidden="true"></span></button></th>
+            <th scope="col" class="num"><button type="button" data-sort="beds">Beds<span aria-hidden="true"></span></button></th>
+            <th scope="col"><button type="button" data-sort="garage">Garage<span aria-hidden="true"></span></button></th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {units.map((u) => {
+            const f = byKey[u.family as FamilyKey];
+            return (
+              <tr
+                data-family={u.family}
+                data-lot={u.lot}
+                data-parcel={u.parcel}
+                data-sf={u.footprintSF}
+                data-beds={f.beds}
+                data-plan={f.plans}
+                data-garage={f.garages}
+                data-fp={f.footprint}
+              >
+                <th scope="row"><span class="key" data-family={u.family} aria-hidden="true"></span>{u.lot}</th>
+                <td>{u.parcel === 1 ? "1 · GC frontage" : "2–4"}</td>
+                <td>{f.plans}</td>
+                <td>{f.footprint}</td>
+                <td class="num">{u.footprintSF.toLocaleString()}</td>
+                <td class="num">{f.beds}</td>
+                <td class="garage">{f.garages}</td>
+                <td><span class="status">{u.status}</span></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const table = document.querySelector("[data-matrix]");
+    if (!table) return;
+    const tbody = table.querySelector("tbody");
+    const rows = Array.from(tbody.querySelectorAll("tr"));
+    const live = document.querySelector("[data-count]");
+    let sortKey = "lot", dir = 1;
+
+    const val = (r, k) => {
+      if (k === "lot") return +r.dataset.lot;
+      if (k === "sf") return +r.dataset.sf;
+      if (k === "beds") return +r.dataset.beds;
+      if (k === "parcel") return +r.dataset.parcel;
+      return r.dataset[k] ?? "";
+    };
+
+    const render = () => {
+      const sorted = [...rows].sort((a, b) => {
+        const x = val(a, sortKey), y = val(b, sortKey);
+        if (x === y) return (+a.dataset.lot) - (+b.dataset.lot);
+        return (typeof x === "number" ? x - y : String(x).localeCompare(String(y))) * dir;
+      });
+      sorted.forEach((r) => tbody.appendChild(r));
+    };
+
+    table.querySelectorAll("[data-sort]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const k = btn.dataset.sort;
+        dir = sortKey === k ? -dir : 1;
+        sortKey = k;
+        table.querySelectorAll("th").forEach((th) => th.removeAttribute("aria-sort"));
+        btn.closest("th").setAttribute("aria-sort", dir === 1 ? "ascending" : "descending");
+        render();
+        live.textContent = `Sorted by ${btn.textContent.trim()}, ${dir === 1 ? "ascending" : "descending"}`;
+      });
+    });
+
+    document.querySelectorAll("[data-filter]").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        const f = chip.dataset.filter;
+        document.querySelectorAll("[data-filter]").forEach((c) => {
+          const on = c === chip;
+          c.classList.toggle("is-on", on);
+          c.setAttribute("aria-pressed", String(on));
+        });
+        let shown = 0;
+        rows.forEach((r) => {
+          const show = f === "all" || r.dataset.family === f;
+          r.hidden = !show;
+          if (show) shown++;
+        });
+        live.textContent = f === "all"
+          ? `Showing all ${shown} lots`
+          : `Showing ${shown} lots with a ${chip.textContent.trim().replace(/\s*\d+$/, "")} footprint`;
+      });
+    });
+  })();
+</script>
+
+<style>
+  .head {
+    display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: 2.25rem;
+  }
+  @media (max-width: 860px) { .head { grid-template-columns: 1fr; align-items: start; } }
+  .note { font-size: 0.8125rem; color: var(--muted); margin: 0; line-height: 1.6; max-width: 46ch; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+    justify-content: space-between; margin-bottom: 1rem;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip {
+    font: inherit; font-size: 0.75rem; letter-spacing: 0.02em;
+    background: transparent; border: 1px solid var(--rule); color: var(--ink);
+    padding: 0.5rem 0.85rem; cursor: pointer;
+    transition: border-color 180ms, color 180ms, background 180ms;
+  }
+  .chip span { color: var(--muted); margin-left: 0.35em; }
+  .chip:hover { border-color: var(--ink); background: var(--paper-2); }
+  .chip.is-on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .chip.is-on span { color: color-mix(in srgb, var(--paper) 78%, var(--ink)); }
+  .count { font-size: 0.75rem; color: var(--muted); margin: 0; }
+
+  .table-wrap { border: 1px solid var(--rule); }
+  table { width: 100%; border-collapse: collapse; min-width: 46rem; font-size: 0.875rem; }
+  thead th {
+    position: sticky; top: 0; z-index: 2;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    text-align: left; padding: 0; font-weight: 500;
+  }
+  thead button {
+    font: inherit; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+    background: none; border: 0; color: var(--muted); cursor: pointer;
+    padding: 0.85rem 1rem; width: 100%; text-align: inherit;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  thead .num button { justify-content: flex-end; }
+  thead button:hover { color: var(--ink); }
+  th[aria-sort] button { color: var(--ink); }
+  th[aria-sort="ascending"] button span::after { content: "↑"; }
+  th[aria-sort="descending"] button span::after { content: "↓"; }
+
+  tbody th { text-align: left; font-weight: 500; }
+  tbody th, tbody td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--rule); }
+  tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover { background: color-mix(in srgb, var(--brass) 7%, transparent); }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .garage { color: var(--muted); font-size: 0.8125rem; }
+
+  .key { display: inline-block; width: 9px; height: 9px; margin-right: 0.6rem; vertical-align: 0; background: var(--f); }
+  [data-family="24x45"] { --f: #7a4f24; }
+  [data-family="20x45"] { --f: #a67c3d; }
+  [data-family="15x45"] { --f: #c4a473; }
+  [data-family="24x30"] { --f: #4f6f80; }
+
+  .status {
+    font-size: 0.6875rem; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--brass-ink); white-space: nowrap;
+  }
+</style>

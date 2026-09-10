@@ -1,0 +1,225 @@
+---
+import { getCollection } from "astro:content";
+import { seller, project } from "~/data/project";
+
+interface Props { full?: boolean }
+const { full = false } = Astro.props;
+
+const docs = (await getCollection("documents")).map((d) => d.data);
+const order = ["Entitlement", "Civil & Survey", "Environmental", "Architectural", "Financial", "Title"] as const;
+const grouped = order
+  .map((cat) => ({ cat, items: docs.filter((d) => d.category === cat) }))
+  .filter((g) => g.items.length);
+
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+---
+
+<section id="data-room" class="section data-room ground-dark" aria-labelledby="dr-h">
+  <div class="shell">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Due diligence</p>
+        <h2 id="dr-h" class="display-l">The whole file, on request.</h2>
+        <p class="lede-ground-dark">
+          Everything filed with the City in August 2026, plus the engineering and architecture
+          behind it. Tell us who you are and the package opens — the gate is so we know who is
+          looking, not to keep anyone out.
+        </p>
+      </div>
+
+      <form class="gate" data-gate method="post" action="/api/data-room" novalidate>
+        <h3 class="gate-h">Request access</h3>
+        <div class="fields">
+          <label>
+            <span>Name</span>
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
+          <label>
+            <span>Company</span>
+            <input name="company" type="text" autocomplete="organization" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label>
+            <span>Phone</span>
+            <input name="phone" type="tel" autocomplete="tel" />
+          </label>
+        </div>
+        <label class="ack">
+          <input name="ack" type="checkbox" required />
+          <span>
+            I understand these materials are confidential, are provided without representation or
+            warranty, and that the preliminary plat remains under City review.
+          </span>
+        </label>
+        {siteKey ? <div class="cf-turnstile" data-sitekey={siteKey} data-theme="dark"></div> : null}
+        <button type="submit" class="submit">Open the data room</button>
+        <p class="gate-msg" data-gate-msg role="status" aria-live="polite"></p>
+        <p class="gate-alt">
+          Or email <a href={`mailto:${seller.email}?subject=${encodeURIComponent(`${project.name} — due diligence request`)}`}>{seller.email}</a>
+        </p>
+      </form>
+    </div>
+
+    <div class="manifest">
+      <div class="manifest-head">
+        <h3 class="sub">In the package — {docs.length} documents</h3>
+        <a class="pkg" href="/api/offering-package" data-gated>
+          Offering package · single PDF
+        </a>
+      </div>
+
+      {grouped.map((g) => (
+        <div class="group">
+          <p class="cat">{g.cat} <span>{g.items.length}</span></p>
+          <ul>
+            {g.items.map((d) => (
+              <li>
+                <span class="doc-title">{d.title}</span>
+                <span class="doc-meta">
+                  {d.author ? <span>{d.author}</span> : null}
+                  <span>{d.date}</span>
+                  <span class="lock" data-gated={String(d.gated)}>{d.gated ? "Gated" : "Open"}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+{siteKey ? <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script> : null}
+
+<script is:inline>
+  (() => {
+    const form = document.querySelector("[data-gate]");
+    if (!form) return;
+    const msg = form.querySelector("[data-gate-msg]");
+    const btn = form.querySelector(".submit");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      btn.disabled = true;
+      msg.textContent = "Sending…";
+      msg.dataset.state = "";
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok) {
+          msg.dataset.state = "ok";
+          msg.textContent = "Access granted — the documents below are now open to you. A copy of the package link is on its way to your inbox.";
+          form.querySelectorAll("[data-gated]").forEach((el) => el.removeAttribute("data-gated"));
+          document.querySelectorAll(".lock").forEach((l) => { if (l.dataset.gated === "true") l.textContent = "Open"; });
+        } else {
+          msg.dataset.state = "err";
+          msg.textContent = data.message || "That didn't go through. Email Ian directly and he'll send the package.";
+        }
+      } catch {
+        msg.dataset.state = "err";
+        msg.textContent = "That didn't go through. Email Ian directly and he'll send the package.";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  })();
+</script>
+
+<style>
+  .head {
+    display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 5rem); align-items: start;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  @media (max-width: 940px) { .head { grid-template-columns: 1fr; } }
+  h2 { max-width: 13ch; margin-bottom: 1.5rem; }
+  .lede-ground-dark {
+    font-size: 1.0625rem; line-height: 1.6; color: var(--on-slate-muted);
+    max-width: 46ch; margin: 0;
+  }
+
+  .gate { border: 1px solid var(--rule-invert); padding: 1.75rem; }
+  .gate-h {
+    font-family: var(--font-display); font-variation-settings: "opsz" 48, "wght" 400;
+    font-size: 1.375rem; letter-spacing: -0.02em; margin: 0 0 1.35rem;
+  }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+  @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
+  label { display: block; }
+  label > span {
+    display: block; font-size: 0.6875rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--on-slate-muted); margin-bottom: 0.4rem;
+  }
+  input[type="text"], input[type="email"], input[type="tel"] {
+    width: 100%; font: inherit; font-size: 0.9375rem;
+    background: transparent; color: var(--on-slate);
+    border: 0; border-bottom: 1px solid var(--rule-invert);
+    padding: 0.5rem 0; border-radius: 0;
+  }
+  input:focus { outline: none; border-bottom-color: var(--brass); }
+  input:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
+
+  .ack { display: flex; gap: 0.7rem; margin: 1.35rem 0; align-items: flex-start; }
+  .ack input { margin-top: 0.25rem; accent-color: var(--brass); flex: none; }
+  .ack span { font-size: 0.75rem; line-height: 1.55; color: var(--on-slate-muted); }
+
+  .submit {
+    font: inherit; font-size: 0.75rem; letter-spacing: 0.13em; text-transform: uppercase;
+    background: var(--on-slate); color: var(--slate); border: 0;
+    padding: 0.95rem 1.5rem; cursor: pointer; width: 100%;
+    transition: background 200ms;
+  }
+  .submit:hover:not(:disabled) { background: var(--brass); color: #fff; }
+  .submit:disabled { opacity: 0.5; cursor: progress; }
+
+  .gate-msg { font-size: 0.8125rem; line-height: 1.55; margin: 0.9rem 0 0; min-height: 0; }
+  .gate-msg[data-state="ok"] { color: #9fd6a8; }
+  .gate-msg[data-state="err"] { color: #f0a9a0; }
+  .gate-alt { font-size: 0.75rem; color: var(--on-slate-muted); margin: 0.9rem 0 0; }
+  .gate-alt a { color: var(--brass-on-dark); }
+
+  .manifest { border-top: 1px solid var(--rule-invert); padding-top: 2.5rem; }
+  .manifest-head {
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: baseline;
+    justify-content: space-between; margin-bottom: 2rem;
+  }
+  .sub {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-slate-muted); margin: 0;
+  }
+  .pkg {
+    font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+    text-decoration: none; border: 1px solid var(--rule-invert);
+    padding: 0.7rem 1.15rem; transition: border-color 200ms, background 200ms;
+  }
+  .pkg:hover { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 16%, transparent); }
+  .pkg[data-gated]::after { content: " · locked"; color: var(--on-slate-muted); }
+
+  .group { margin-bottom: 2.25rem; }
+  .cat {
+    font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--brass-on-dark); margin: 0 0 0.85rem;
+    padding-bottom: 0.6rem; border-bottom: 1px solid var(--rule-invert);
+  }
+  .cat span { color: var(--on-slate-muted); margin-left: 0.4em; }
+  .group ul { list-style: none; margin: 0; padding: 0; }
+  .group li {
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem;
+    align-items: baseline; justify-content: space-between;
+    padding: 0.7rem 0; border-bottom: 1px solid color-mix(in srgb, var(--rule-invert) 55%, transparent);
+  }
+  .doc-title { font-size: 0.9375rem; }
+  .doc-meta { display: flex; gap: 1.25rem; font-size: 0.75rem; color: var(--on-slate-muted); }
+  .lock[data-gated="true"] { color: var(--brass-on-dark); }
+  @media (max-width: 620px) {
+    .doc-meta { gap: 0.9rem; font-size: 0.6875rem; }
+  }
+</style>

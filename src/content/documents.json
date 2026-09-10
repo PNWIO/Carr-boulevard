@@ -1,0 +1,174 @@
+[
+  {
+    "id": "prelim-plat-application",
+    "title": "Preliminary plat application",
+    "category": "Entitlement",
+    "date": "August 5, 2026",
+    "author": "Laughlin Development LLC",
+    "gated": true,
+    "key": "entitlement/carr-preliminary-plat-application.pdf"
+  },
+  {
+    "id": "rcd-application",
+    "title": "Residential cluster development application",
+    "category": "Entitlement",
+    "date": "August 5, 2026",
+    "author": "Laughlin Development LLC",
+    "gated": true,
+    "key": "entitlement/carr-rcd-application.pdf"
+  },
+  {
+    "id": "pre-submittal-report",
+    "title": "Pre-submittal conference report",
+    "category": "Entitlement",
+    "date": "October 2025",
+    "author": "City of Bremerton",
+    "gated": true,
+    "key": "entitlement/carr-pre-submittal-report.pdf"
+  },
+  {
+    "id": "utility-availability",
+    "title": "Utility availability letter",
+    "category": "Entitlement",
+    "date": "2026",
+    "author": "City of Bremerton",
+    "gated": true,
+    "key": "entitlement/carr-utility-availability-letter.pdf"
+  },
+  {
+    "id": "legal-descriptions",
+    "title": "Legal descriptions — four parcels",
+    "category": "Title",
+    "date": "August 5, 2026",
+    "gated": true,
+    "key": "title/carr-legal-descriptions-4-parcels.pdf"
+  },
+  {
+    "id": "prelim-plat-map",
+    "title": "Preliminary plat map",
+    "category": "Civil & Survey",
+    "date": "June 23, 2026",
+    "author": "N.L. Olson & Associates, Inc.",
+    "gated": true,
+    "key": "civil/carr-preliminary-plat-map.pdf"
+  },
+  {
+    "id": "civil-improvement-plans",
+    "title": "Preliminary civil improvement plans (signed)",
+    "category": "Civil & Survey",
+    "date": "June 23, 2026",
+    "author": "N.L. Olson & Associates, Inc.",
+    "gated": true,
+    "key": "civil/carr-preliminary-civil-improvement-plans-signed.pdf"
+  },
+  {
+    "id": "site-plan-c300",
+    "title": "C3.00 Site plan",
+    "category": "Civil & Survey",
+    "date": "June 23, 2026",
+    "author": "N.L. Olson & Associates, Inc.",
+    "gated": true,
+    "key": "civil/carr-c300-site-plan.pdf"
+  },
+  {
+    "id": "storm-grading-c500",
+    "title": "C5.00 Storm and grading plan",
+    "category": "Civil & Survey",
+    "date": "June 23, 2026",
+    "author": "N.L. Olson & Associates, Inc.",
+    "gated": true,
+    "key": "civil/carr-c500-storm-grading-plan.pdf"
+  },
+  {
+    "id": "site-phasing-plan",
+    "title": "Site phasing plan",
+    "category": "Civil & Survey",
+    "date": "June 23, 2026",
+    "author": "N.L. Olson & Associates, Inc.",
+    "gated": true,
+    "key": "civil/carr-site-phasing-plan.pdf"
+  },
+  {
+    "id": "geotech",
+    "title": "Preliminary geotechnical engineering report",
+    "category": "Environmental",
+    "date": "June 23, 2026",
+    "gated": true,
+    "key": "environmental/carr-preliminary-geotechnical-report.pdf"
+  },
+  {
+    "id": "storm-drainage-analysis",
+    "title": "Preliminary storm drainage analysis (signed)",
+    "category": "Environmental",
+    "date": "June 23, 2026",
+    "author": "N.L. Olson & Associates, Inc.",
+    "gated": true,
+    "key": "environmental/carr-preliminary-storm-drainage-analysis-signed.pdf"
+  },
+  {
+    "id": "sepa-checklist",
+    "title": "SEPA environmental checklist (signed)",
+    "category": "Environmental",
+    "date": "July 29, 2026",
+    "gated": true,
+    "key": "environmental/carr-sepa-signed.pdf"
+  },
+  {
+    "id": "tree-report",
+    "title": "Tree report",
+    "category": "Environmental",
+    "date": "2026",
+    "gated": true,
+    "key": "environmental/carr-tree-report.pdf"
+  },
+  {
+    "id": "traffic-count",
+    "title": "Traffic count",
+    "category": "Environmental",
+    "date": "2026",
+    "author": "Heath & Associates",
+    "gated": true,
+    "key": "environmental/carr-traffic-count-heath-associates.pdf"
+  },
+  {
+    "id": "photometric",
+    "title": "Preliminary photometric plan",
+    "category": "Environmental",
+    "date": "June 23, 2026",
+    "gated": true,
+    "key": "environmental/carr-preliminary-photometric-plan.pdf"
+  },
+  {
+    "id": "architecture",
+    "title": "Architecture — unit plans, elevations and mix for all 38 homes",
+    "category": "Architectural",
+    "date": "2026",
+    "gated": true,
+    "key": "architectural/carr-blvd-architecture.pdf"
+  },
+  {
+    "id": "landscape-set",
+    "title": "Preliminary landscape plan set",
+    "category": "Architectural",
+    "date": "September 2026",
+    "gated": true,
+    "key": "architectural/carr-landscape-plan-set.pdf"
+  },
+  {
+    "id": "civil-estimate",
+    "title": "Civil cost estimate",
+    "category": "Financial",
+    "date": "2026",
+    "gated": true,
+    "key": "financial/carr-civil-estimate.pdf"
+  },
+  {
+    "id": "offering-flyer",
+    "title": "Land offering summary",
+    "category": "Financial",
+    "date": "September 2026",
+    "author": "Laughlin Development LLC",
+    "gated": false,
+    "pages": 2
+  }
+]

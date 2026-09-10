@@ -1,0 +1,261 @@
+---
+import plan from "~/data/site-plan.json";
+import { footprintFamilies, site } from "~/data/project";
+import type { FamilyKey } from "~/data/project";
+
+const families = Object.values(footprintFamilies).sort((a, b) => b.units - a.units);
+const byKey = Object.fromEntries(families.map((f) => [f.key, f])) as Record<FamilyKey, (typeof families)[number]>;
+
+/** Reading order for keyboard traversal: parcel 1 first, then lots 1..32. */
+const units = [...plan.units].sort((a, b) => (a.parcel === b.parcel ? a.lot - b.lot : a.parcel === 1 ? -1 : 1));
+---
+
+<section class="section-tight siteplan" aria-labelledby="plan-h">
+  <div class="shell">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Site plan</p>
+        <h2 id="plan-h" class="display-l">Thirty-eight lots, drawn from the civil set.</h2>
+      </div>
+      <p class="note">
+        Geometry taken directly from the signed preliminary plat base drawing,
+        N.L.&nbsp;Olson &amp; Associates project {site.sourceDate ? "25-13629" : ""}.
+        Hover or tap a home for its lot number and plan. Keyboard: <kbd>Tab</kbd> into the plan,
+        then <kbd>←</kbd> <kbd>→</kbd> to move between lots.
+      </p>
+    </div>
+
+    <div class="legend" role="list">
+      {families.map((f) => (
+        <div class="legend-item" role="listitem">
+          <span class="swatch" data-family={f.key} aria-hidden="true"></span>
+          <span class="legend-text">
+            <strong>{f.footprint}</strong>
+            <span>{f.beds} bed · {f.units} homes</span>
+          </span>
+        </div>
+      ))}
+    </div>
+
+    <div class="plan-wrap">
+      <div class="scroll-x plan-scroll">
+        <svg
+          viewBox={plan.viewBox}
+          role="group"
+          aria-labelledby="plan-h"
+          aria-describedby="plan-desc"
+          class="plan"
+          data-plan
+        >
+          <desc id="plan-desc">
+            Interactive site plan of the Carr Boulevard preliminary plat showing thirty-eight
+            lots grouped in attached buildings around a private drive, with open space tracts and
+            the stormwater pond. The same information is available as a table below.
+          </desc>
+
+          <g class="bg" aria-hidden="true">
+            {plan.boundary.map((d) => <path d={d} class="p-boundary" />)}
+            {plan.tracts.map((d) => <path d={d} class="p-tract" />)}
+            {plan.driveways.map((d) => <path d={d} class="p-drive" />)}
+            {plan.walls.map((d) => <path d={d} class="p-wall" />)}
+            {plan.curbs.map((d) => <path d={d} class="p-curb" />)}
+            {plan.parcel1.map((d) => <path d={d} class="p-parcel1" />)}
+          </g>
+
+          <g class="lots">
+            {units.map((u, i) => (
+              <g
+                class="lot"
+                data-lot={u.id}
+                data-family={u.family}
+                tabindex={i === 0 ? 0 : -1}
+                role="button"
+                aria-label={`Lot ${u.lot}${u.parcel === 1 ? " on the commercial frontage parcel" : ""}, ${byKey[u.family as FamilyKey].footprint} footprint, ${byKey[u.family as FamilyKey].beds} bedroom`}
+              >
+                <path d={u.d} class="lot-shape" />
+                <text x={u.cx} y={u.cy} dy="2.4" class="lot-num">{u.lot}</text>
+              </g>
+            ))}
+          </g>
+        </svg>
+      </div>
+
+      <div class="tip" data-tip hidden aria-hidden="true">
+        <p class="tip-lot"></p>
+        <dl>
+          <div><dt>Plan</dt><dd data-tip-plan></dd></div>
+          <div><dt>Footprint</dt><dd data-tip-fp></dd></div>
+          <div><dt>Bedrooms</dt><dd data-tip-beds></dd></div>
+          <div><dt>Garage</dt><dd data-tip-garage></dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <p class="fallback-hint">
+      <a href="#unit-schedule">Skip the plan and read the unit schedule</a>
+    </p>
+  </div>
+</section>
+
+<script is:inline define:vars={{ familyData: footprintFamilies }}>
+  (() => {
+    const svg = document.querySelector("[data-plan]");
+    const tip = document.querySelector("[data-tip]");
+    if (!svg || !tip) return;
+
+    const lots = Array.from(svg.querySelectorAll(".lot"));
+    const fam = familyData;
+    const q = (s) => tip.querySelector(s);
+    let pinned = null;
+
+    const fill = (el) => {
+      const f = fam[Object.keys(fam).find((k) => fam[k].key === el.dataset.family)];
+      const num = el.querySelector(".lot-num")?.textContent ?? "";
+      q(".tip-lot").textContent = `Lot ${num}`;
+      q("[data-tip-plan]").textContent = `Type ${f.plans}`;
+      q("[data-tip-fp]").textContent = f.footprint;
+      q("[data-tip-beds]").textContent = `${f.beds} bed · ${f.baths} bath`;
+      q("[data-tip-garage]").textContent = f.garages;
+    };
+
+    const place = (el) => {
+      const r = el.getBoundingClientRect();
+      const w = svg.closest(".plan-wrap").getBoundingClientRect();
+      tip.hidden = false;
+      tip.setAttribute("aria-hidden", "false");
+      const tw = tip.offsetWidth, th = tip.offsetHeight;
+      let x = r.left - w.left + r.width / 2 - tw / 2;
+      let y = r.top - w.top - th - 10;
+      x = Math.max(8, Math.min(x, w.width - tw - 8));
+      if (y < 4) y = r.bottom - w.top + 10;
+      tip.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+    };
+
+    const show = (el) => { fill(el); place(el); };
+    const hide = () => {
+      if (pinned) return;
+      tip.hidden = true;
+      tip.setAttribute("aria-hidden", "true");
+    };
+
+    lots.forEach((el, i) => {
+      el.addEventListener("pointerenter", () => { if (!pinned) show(el); });
+      el.addEventListener("focus", () => show(el));
+      el.addEventListener("pointerleave", hide);
+      el.addEventListener("blur", hide);
+
+      const activate = () => {
+        if (pinned === el) { pinned = null; el.classList.remove("is-pinned"); hide(); return; }
+        lots.forEach((l) => l.classList.remove("is-pinned"));
+        pinned = el; el.classList.add("is-pinned"); show(el);
+      };
+      el.addEventListener("click", activate);
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); activate(); return; }
+        const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+        if (!step) {
+          if (e.key === "Escape" && pinned) { pinned.classList.remove("is-pinned"); pinned = null; hide(); }
+          return;
+        }
+        e.preventDefault();
+        const next = lots[(i + step + lots.length) % lots.length];
+        el.setAttribute("tabindex", "-1");
+        next.setAttribute("tabindex", "0");
+        next.focus();
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (pinned && !e.target.closest(".lot")) {
+        pinned.classList.remove("is-pinned"); pinned = null; hide();
+      }
+    });
+    window.addEventListener("resize", () => { if (pinned) place(pinned); }, { passive: true });
+  })();
+</script>
+
+<style>
+  .head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: end;
+    margin-bottom: 2.5rem;
+  }
+  @media (max-width: 860px) { .head { grid-template-columns: 1fr; align-items: start; } }
+  h2 { max-width: 16ch; }
+  .note { font-size: 0.8125rem; color: var(--muted); margin: 0; line-height: 1.6; max-width: 44ch; }
+  kbd {
+    font: inherit; font-size: 0.75rem;
+    border: 1px solid var(--rule); border-bottom-width: 2px;
+    border-radius: 3px; padding: 0 0.3em; background: var(--paper-2);
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 1.5rem 2.25rem; margin-bottom: 1.5rem; }
+  .legend-item { display: flex; gap: 0.6rem; align-items: flex-start; }
+  .swatch { width: 14px; height: 14px; margin-top: 3px; flex: none; }
+  .legend-text { display: flex; flex-direction: column; line-height: 1.3; }
+  .legend-text strong { font-size: 0.875rem; font-weight: 500; }
+  .legend-text span { font-size: 0.75rem; color: var(--muted); }
+
+  [data-family="24x45"] { --f: #7a4f24; }
+  [data-family="20x45"] { --f: #a67c3d; }
+  [data-family="15x45"] { --f: #c4a473; }
+  [data-family="24x30"] { --f: #4f6f80; }
+  .swatch { background: var(--f); }
+
+  .plan-wrap { position: relative; }
+  .plan-scroll { border: 1px solid var(--rule); background: var(--paper); }
+  .plan { display: block; width: 100%; height: auto; min-width: 560px; }
+
+  .p-boundary { fill: color-mix(in srgb, var(--ink) 7%, var(--paper)); stroke: var(--rule); stroke-width: 0.8; }
+  .p-tract { fill: color-mix(in srgb, #7f9a6e 24%, transparent); }
+  .p-drive { fill: color-mix(in srgb, var(--ink) 6%, transparent); }
+  .p-wall { fill: color-mix(in srgb, var(--ink) 12%, transparent); }
+  .p-curb { fill: none; stroke: color-mix(in srgb, var(--ink) 28%, transparent); stroke-width: 0.7; }
+  .p-parcel1 { fill: none; stroke: var(--brass); stroke-width: 1; stroke-dasharray: 5 3.5; opacity: 0.75; }
+
+  .lot { cursor: pointer; }
+  .lot-shape {
+    fill: var(--f);
+    stroke: var(--paper);
+    stroke-width: 0.7;
+    transition: fill 180ms var(--ease-out-expo);
+  }
+  .lot-num {
+    fill: #fff; font-family: var(--font-sans); font-size: 6.4px; font-weight: 500;
+    text-anchor: middle; pointer-events: none; letter-spacing: -0.02em;
+  }
+  .lot:hover .lot-shape,
+  .lot:focus-visible .lot-shape,
+  .lot.is-pinned .lot-shape { fill: var(--ink); }
+  .lot:focus-visible { outline: none; }
+  .lot:focus-visible .lot-shape { stroke: var(--brass-ink); stroke-width: 2; }
+  .lot.is-pinned .lot-shape { stroke: var(--brass); stroke-width: 1.6; }
+
+  .tip {
+    position: absolute; top: 0; left: 0;
+    background: var(--slate); color: var(--on-slate);
+    padding: 0.85rem 1rem; min-width: 12.5rem;
+    box-shadow: var(--shadow-card);
+    pointer-events: none; z-index: 5;
+  }
+  .tip-lot {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 40, "wght" 500;
+    font-size: 1.0625rem; margin: 0 0 0.5rem;
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule-invert);
+  }
+  .tip dl { margin: 0; display: grid; gap: 0.3rem; }
+  .tip dl > div { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.75rem; }
+  .tip dt { color: var(--on-slate-muted); }
+  .tip dd { margin: 0; text-align: right; }
+
+  .fallback-hint { margin: 1rem 0 0; font-size: 0.8125rem; }
+  .fallback-hint a { color: var(--muted); }
+
+  @media (max-width: 620px) {
+    .legend { gap: 0.9rem 1.5rem; }
+    .plan { min-width: 520px; }
+  }
+</style>

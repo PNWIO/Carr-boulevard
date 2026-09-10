@@ -1,0 +1,133 @@
+---
+import { Image } from "astro:assets";
+import hero from "~/assets/img/hero-aerial.jpg";
+import { program } from "~/data/project";
+---
+
+<section class="hero ground-dark">
+  <div class="inner">
+    <div class="content">
+      <p class="status">
+        <span class="dot" aria-hidden="true"></span>
+        Preliminary plat submitted · under City review
+      </p>
+
+      <h1 class="display-xl">Carr<br />Boulevard</h1>
+
+      <p class="sub">
+        {program.totalUnits} fee-simple attached homes on four assembled parcels
+        at Kitsap&nbsp;Way, Bremerton.
+      </p>
+
+      <dl class="stack">
+        <div><dt>Site</dt><dd>4.08 acres · 177,663 SF</dd></div>
+        <div><dt>Zoning</dt><dd>R-10 + General Commercial frontage</dd></div>
+        <div><dt>Status</dt><dd>Filed with the City of Bremerton, August 2026</dd></div>
+      </dl>
+
+      <div class="actions">
+        <a class="btn primary" href="/offering">The offering</a>
+        <a class="btn ghost" href="/data-room">Due-diligence package</a>
+      </div>
+    </div>
+
+    <figure class="media">
+      <Image
+        src={hero}
+        alt="Aerial rendering of the Carr Boulevard plat looking south-east across Kitsap Way: attached townhome buildings, private drives and wooded open space."
+        widths={[560, 900, 1320]}
+        sizes="(max-width: 980px) 100vw, 46vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={70}
+        format="avif"
+      />
+      <figcaption>
+        Preliminary design rendering. Illustrative only — subject to final engineering and City conditions.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; margin-top: -4.25rem; padding-top: 4.25rem; }
+  @media (max-width: 860px) { .hero { margin-top: 0; padding-top: 0; } }
+
+  .inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    align-items: stretch;
+    min-height: min(94dvh, 860px);
+  }
+  @media (max-width: 980px) { .inner { grid-template-columns: minmax(0, 1fr); min-height: 0; } }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: clamp(3.5rem, 7vw, 6.5rem) clamp(1.25rem, 4vw, 4rem) clamp(4rem, 7vw, 6.5rem)
+      clamp(1.25rem, 5vw, 4.5rem);
+    /* align the left edge with .shell on wide screens */
+    padding-left: max(clamp(1.25rem, 5vw, 4.5rem), calc((100vw - 82.5rem) / 2 + 4.5rem));
+  }
+
+  .status {
+    display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+    font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--on-slate-muted); margin: 0 0 2rem;
+  }
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex: none;
+    background: var(--brass); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brass) 24%, transparent);
+  }
+
+  h1 { max-width: 11ch; }
+
+  .sub {
+    font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+    line-height: 1.4; max-width: 32ch;
+    margin: 1.75rem 0 0; color: var(--on-slate);
+  }
+
+  .stack { margin: 2.5rem 0 0; max-width: 30rem; border-top: 1px solid var(--rule-invert); }
+  .stack > div {
+    display: grid; grid-template-columns: minmax(0, 5.5rem) minmax(0, 1fr);
+    gap: 1rem; padding: 0.7rem 0;
+    border-bottom: 1px solid var(--rule-invert);
+  }
+  .stack dt {
+    font-size: 0.625rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--on-slate-muted); padding-top: 0.28em;
+  }
+  .stack dd { margin: 0; font-size: 0.875rem; line-height: 1.5; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.5rem; }
+  .btn {
+    text-decoration: none; font-size: 0.75rem; letter-spacing: 0.13em;
+    text-transform: uppercase; padding: 0.95rem 1.6rem; border: 1px solid transparent;
+    transition: background 220ms var(--ease-out-expo), color 220ms, border-color 220ms;
+  }
+  .primary { background: var(--on-slate); color: var(--slate); }
+  .primary:hover { background: var(--brass); color: #fff; }
+  .ghost { border-color: var(--rule-invert); color: var(--on-slate); }
+  .ghost:hover { border-color: var(--on-slate); background: color-mix(in srgb, var(--on-slate) 9%, transparent); }
+
+  .media { position: relative; margin: 0; min-width: 0; }
+  .media :global(img) {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%;
+  }
+  @media (max-width: 980px) {
+    .media { aspect-ratio: 4 / 3; width: 100%; }
+    .media :global(img) { position: static; width: 100%; height: 100%; }
+  }
+  figcaption {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 2.5rem 1.5rem 1rem;
+    font-size: 0.6875rem; line-height: 1.5; color: #e8e4dc;
+    background: linear-gradient(to top, rgb(9 18 32 / 0.72), transparent);
+  }
+  @media (max-width: 980px) { figcaption { position: static; background: none; color: var(--on-slate-muted); padding: 0.85rem 1.25rem 0; } }
+
+</style>

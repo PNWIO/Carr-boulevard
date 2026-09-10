@@ -1,0 +1,306 @@
+[
+  {
+    "id": "P1-1",
+    "lot": 1,
+    "parcel": 1,
+    "family": "15x45",
+    "footprintSF": 675,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "P1-2",
+    "lot": 2,
+    "parcel": 1,
+    "family": "15x45",
+    "footprintSF": 675,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "P1-3",
+    "lot": 3,
+    "parcel": 1,
+    "family": "15x45",
+    "footprintSF": 675,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "P1-4",
+    "lot": 4,
+    "parcel": 1,
+    "family": "15x45",
+    "footprintSF": 675,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "P1-5",
+    "lot": 5,
+    "parcel": 1,
+    "family": "15x45",
+    "footprintSF": 675,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "P1-6",
+    "lot": 6,
+    "parcel": 1,
+    "family": "15x45",
+    "footprintSF": 675,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "1",
+    "lot": 1,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "2",
+    "lot": 2,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "3",
+    "lot": 3,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "4",
+    "lot": 4,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "5",
+    "lot": 5,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "6",
+    "lot": 6,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "7",
+    "lot": 7,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "8",
+    "lot": 8,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "9",
+    "lot": 9,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "10",
+    "lot": 10,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "11",
+    "lot": 11,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "12",
+    "lot": 12,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "13",
+    "lot": 13,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "14",
+    "lot": 14,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 893,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "15",
+    "lot": 15,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 886,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "16",
+    "lot": 16,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1052,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "17",
+    "lot": 17,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "18",
+    "lot": 18,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "19",
+    "lot": 19,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "20",
+    "lot": 20,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "21",
+    "lot": 21,
+    "parcel": 234,
+    "family": "24x30",
+    "footprintSF": 720,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "22",
+    "lot": 22,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "23",
+    "lot": 23,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "24",
+    "lot": 24,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "25",
+    "lot": 25,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1080,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "26",
+    "lot": 26,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "27",
+    "lot": 27,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 900,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "28",
+    "lot": 28,
+    "parcel": 234,
+    "family": "24x30",
+    "footprintSF": 720,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "29",
+    "lot": 29,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 899,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "30",
+    "lot": 30,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1079,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "31",
+    "lot": 31,
+    "parcel": 234,
+    "family": "24x45",
+    "footprintSF": 1079,
+    "status": "Entitlement in review"
+  },
+  {
+    "id": "32",
+    "lot": 32,
+    "parcel": 234,
+    "family": "20x45",
+    "footprintSF": 899,
+    "status": "Entitlement in review"
+  }
+]

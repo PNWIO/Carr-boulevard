@@ -1,0 +1,28 @@
+name = "homesoncarr"
+compatibility_date = "2026-09-01"
+pages_build_output_dir = "dist"
+
+# --- Bindings -----------------------------------------------------------------
+# Create these once, then add them in the Pages dashboard under
+# Settings → Functions → Bindings (see README). The site builds and deploys
+# fine without them; the forms just fall back to email.
+#
+#   wrangler kv namespace create LEADS
+#   wrangler r2 bucket create homesoncarr-docs
+
+# [[kv_namespaces]]
+# binding = "LEADS"
+# id = "<paste the id wrangler prints>"
+
+# [[r2_buckets]]
+# binding = "DOCS"
+# bucket_name = "homesoncarr-docs"
+
+# --- Secrets ------------------------------------------------------------------
+# Never in this file. Add in the dashboard, or:
+#   wrangler pages secret put HMAC_SECRET
+#   wrangler pages secret put TURNSTILE_SECRET_KEY
+#   wrangler pages secret put RESEND_API_KEY
+#
+# Plain (non-secret) variables: LEAD_NOTIFY_TO, LEAD_NOTIFY_FROM,
+# PUBLIC_TURNSTILE_SITE_KEY — the last one must be set at build time.

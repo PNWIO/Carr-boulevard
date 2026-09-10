@@ -1,0 +1,18 @@
+---
+import Base from "~/layouts/Base.astro";
+import Location from "~/components/sections/Location.astro";
+import PageHead from "~/components/layout/PageHead.astro";
+---
+
+<Base
+  title="Location and market — Carr Boulevard Townhomes, Bremerton WA"
+  description="Five minutes to Puget Sound Naval Shipyard, seven to the Seattle fast ferry. Bremerton market data, employment anchors and nearby new-construction pricing, each with its source."
+  path="/location"
+>
+  <PageHead
+    eyebrow="Location"
+    title="Where the demand comes from."
+    lede="Kitsap County's housing demand is employment-driven, and the employer is the Navy. The figures below carry their sources; verify them independently before you underwrite."
+  />
+  <Location />
+</Base>

@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /documents/
+
+Sitemap: https://homesoncarr.com/sitemap-index.xml

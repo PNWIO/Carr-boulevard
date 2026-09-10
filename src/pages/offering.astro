@@ -1,0 +1,175 @@
+---
+import Base from "~/layouts/Base.astro";
+import PageHead from "~/components/layout/PageHead.astro";
+import Timeline from "~/components/sections/Timeline.astro";
+import Team from "~/components/sections/Team.astro";
+import { getCollection } from "astro:content";
+import { site, program, offering, planTypes } from "~/data/project";
+
+const faq = (await getCollection("faq")).map((f) => f.data);
+
+const metrics = [
+  { k: "Total site area", v: `${site.totalAcres} acres · ${site.totalSF.toLocaleString()} SF` },
+  { k: "Parcels", v: `${site.parcels} assembled parcels` },
+  { k: "Parcels 2–4", v: `${site.parcels234SF.toLocaleString()} SF · ${site.parcels234Acres} acres · ${program.lotsParcels234} lots` },
+  { k: "Parcel 1 (GC frontage)", v: `${site.parcel1SF.toLocaleString()} SF · ${program.lotsParcel1} lots` },
+  { k: "Zoning", v: site.zoning },
+  { k: "Tenure", v: program.tenure },
+  { k: "Homes", v: `${program.totalUnits} across ${program.planTypeCount} plan types` },
+  { k: "Impervious area", v: `${site.imperviousSF.toLocaleString()} SF` },
+  { k: "Pervious area", v: `${site.perviousSF.toLocaleString()} SF` },
+  { k: "Open space", v: `${site.openSpaceSF.toLocaleString()} SF in tracts ${site.tracts} — ${site.openSpacePct}% against ${site.openSpaceRequiredPct}% (${site.openSpaceRequiredSF.toLocaleString()} SF) required` },
+  { k: "Lot landscape area", v: `${site.lotLandscapeSF.toLocaleString()} SF` },
+  { k: "Guest parking", v: `${site.guestStalls} stalls` },
+  { k: "Carr Blvd ROW + dedication", v: `${site.rowDedicationSF.toLocaleString()} SF` },
+  { k: "Stormwater", v: "On-site pond in Tract B" },
+];
+
+const terms = [
+  { k: "Asking price", v: offering.price },
+  { k: "Closing condition", v: offering.closingCondition },
+  { k: "Risk allocation", v: offering.closingNote },
+  { k: "Structures considered", v: offering.structure },
+  { k: "Assignment", v: offering.assignment },
+  { k: "Diligence", v: offering.diligence },
+  { k: "Representation", v: "Sold direct by the owner. No brokerage." },
+];
+---
+
+<Base
+  title="Offering summary — Carr Boulevard Townhomes, Bremerton WA"
+  description="Site metrics, unit mix, transaction terms and entitlement status for the 38-home Carr Boulevard plat. Every figure sourced to the June 2026 engineering set or the August 2026 City submittal."
+  path="/offering"
+>
+  <PageHead
+    eyebrow="Offering summary"
+    title="Everything a land committee needs on one page."
+    lede="Figures are taken from the signed preliminary engineering set and the application filed with the City of Bremerton on August 5, 2026. Where a number is not in that record, it is not on this page."
+  />
+
+  <section class="section-tight">
+    <div class="shell cols">
+      <div>
+        <h2 class="sub">Site and program</h2>
+        <dl class="spec">
+          {metrics.map((m) => (
+            <div><dt>{m.k}</dt><dd>{m.v}</dd></div>
+          ))}
+        </dl>
+        <p class="src">
+          Source: {site.source}, {site.sourceDate}. Areas and dimensions are preliminary and
+          subject to final design and City conditions.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="sub">Transaction</h2>
+        <dl class="spec">
+          {terms.map((t) => (
+            <div><dt>{t.k}</dt><dd>{t.v}</dd></div>
+          ))}
+        </dl>
+
+        <h2 class="sub mt">Parcel numbers</h2>
+        <ul class="apns">
+          {site.apns.map((a) => <li>{a}</li>)}
+        </ul>
+
+        <h2 class="sub mt">Unit mix</h2>
+        <dl class="spec">
+          {planTypes.map((p) => (
+            <div>
+              <dt>Type {p.id} — {p.footprint}</dt>
+              <dd>{p.units} × {p.beds} bed{"note" in p && p.note ? ` ${p.note}` : ""} · {p.garage}</dd>
+            </div>
+          ))}
+          <div class="total"><dt>Total</dt><dd>{program.totalUnits} homes</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <Timeline />
+
+  <section class="section-tight">
+    <div class="shell">
+      <h2 class="sub">Questions a buyer asks first</h2>
+      <div class="faq">
+        {faq.map((f) => (
+          <details>
+            <summary>{f.q}</summary>
+            <p>{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Team />
+
+  <section class="section-tight cta-band ground-dark">
+    <div class="shell band">
+      <p class="band-text">
+        The full file — plat application, signed civils, geotech, storm analysis, SEPA, traffic,
+        tree report and architecture for all thirty-eight homes.
+      </p>
+      <a class="band-cta" href="/data-room">Open the data room</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cols {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2.5rem, 6vw, 5.5rem); align-items: start;
+  }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
+
+  .sub {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 1.25rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--rule);
+  }
+  .mt { margin-top: 3rem; }
+
+  .spec { margin: 0; }
+  .spec > div {
+    display: grid; grid-template-columns: minmax(9rem, 0.85fr) minmax(0, 1.15fr);
+    gap: 1.25rem; padding: 0.8rem 0; border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  @media (max-width: 460px) { .spec > div { grid-template-columns: 1fr; gap: 0.25rem; } }
+  .spec dt { font-size: 0.8125rem; color: var(--muted); }
+  .spec dd { margin: 0; font-size: 0.9375rem; line-height: 1.5; }
+  .total dt, .total dd { font-weight: 500; color: var(--ink); }
+
+  .apns { list-style: none; margin: 0; padding: 0; font-variant-numeric: tabular-nums; }
+  .apns li { padding: 0.55rem 0; border-bottom: 1px solid var(--rule); font-size: 0.9375rem; }
+
+  .src { font-size: 0.6875rem; color: var(--muted); margin: 1.25rem 0 0; line-height: 1.55; max-width: 48ch; }
+
+  .faq { border-top: 1px solid var(--rule); max-width: 56rem; }
+  details { border-bottom: 1px solid var(--rule); }
+  summary {
+    cursor: pointer; list-style: none; padding: 1.15rem 0;
+    font-family: var(--font-display); font-variation-settings: "opsz" 48, "wght" 400;
+    font-size: 1.125rem; letter-spacing: -0.018em;
+    display: flex; justify-content: space-between; gap: 1.5rem; align-items: center;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--brass-ink); font-family: var(--font-sans); font-size: 1.25rem; flex: none; }
+  details[open] summary::after { content: "–"; }
+  details p { margin: 0 0 1.35rem; font-size: 0.9375rem; line-height: 1.7; color: var(--muted); max-width: 62ch; }
+
+  .band {
+    display: flex; flex-wrap: wrap; gap: 1.75rem;
+    align-items: center; justify-content: space-between;
+  }
+  .band-text { margin: 0; max-width: 46ch; font-size: 1.0625rem; line-height: 1.55; }
+  .band-cta {
+    text-decoration: none; font-size: 0.75rem; letter-spacing: 0.13em; text-transform: uppercase;
+    border: 1px solid var(--on-slate); padding: 0.95rem 1.6rem; white-space: nowrap;
+    transition: background 200ms, color 200ms, border-color 200ms;
+  }
+  .band-cta:hover { background: var(--brass); border-color: var(--brass); color: #fff; }
+</style>

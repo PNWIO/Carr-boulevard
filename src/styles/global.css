@@ -1,0 +1,228 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Fonts — self-hosted, SIL Open Font License. See public/fonts/*-OFL.txt.
+   Fraunces is pinned to opsz/wght only (67 KB); Inter to wght only (48 KB).
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces-var.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+@font-face {
+  font-family: "InterVar";
+  src: url("/fonts/inter-var.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215;
+}
+
+/* ---------------------------------------------------------------------------
+   Tokens. Light is the committed scheme; dark is a correct inversion, not an
+   afterthought. Every text/ground pair is checked in scripts/verify-contrast.mjs.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-paper: #f7f5f1;
+  --color-paper-2: #efebe4;
+  --color-ink: #101a24;
+  --color-slate: #1e3448;
+  --color-slate-2: #2c4a63;
+  --color-muted: #55636f;
+  --color-rule: #d8d2c8;
+  --color-brass: #a67c3d;
+  --color-brass-ink: #7c5a22;
+  --color-brass-on-dark: #d3ac72;
+  --color-on-slate: #eef1f4;
+  --color-on-slate-muted: #a9bccd;
+  --color-rule-invert: #3a5570;
+
+  --font-display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Palatino,
+    Georgia, "Times New Roman", serif;
+  --font-sans: "InterVar", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+  --paper: var(--color-paper);
+  --paper-2: var(--color-paper-2);
+  --ink: var(--color-ink);
+  --slate: var(--color-slate);
+  --slate-2: var(--color-slate-2);
+  --muted: var(--color-muted);
+  --rule: var(--color-rule);
+  --brass: var(--color-brass);
+  --brass-ink: var(--color-brass-ink);
+  --brass-on-dark: var(--color-brass-on-dark);
+  --on-slate: var(--color-on-slate);
+  --on-slate-muted: var(--color-on-slate-muted);
+  --rule-invert: var(--color-rule-invert);
+  --shadow-card: 0 1px 2px rgb(16 26 36 / 0.04), 0 8px 28px rgb(16 26 36 / 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #0c161f;
+    --paper-2: #12202c;
+    --ink: #ece7df;
+    --slate: #091220;
+    --slate-2: #16293a;
+    --muted: #93a3b1;
+    --rule: #24384a;
+    --brass: #c9a063;
+    --brass-ink: #d9b57e;
+    --brass-on-dark: #d9b57e;
+    --on-slate: #ece7df;
+    --on-slate-muted: #9fb2c3;
+    --rule-invert: #2b4157;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px rgb(0 0 0 / 0.45);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0c161f;
+  --paper-2: #12202c;
+  --ink: #ece7df;
+  --slate: #091220;
+  --slate-2: #16293a;
+  --muted: #93a3b1;
+  --rule: #24384a;
+  --brass: #c9a063;
+  --brass-ink: #d9b57e;
+    --brass-on-dark: #d9b57e;
+  --on-slate: #ece7df;
+  --on-slate-muted: #9fb2c3;
+  --rule-invert: #2b4157;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 10px 30px rgb(0 0 0 / 0.45);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg, video { max-width: 100%; height: auto; display: block; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 96, "wght" 400;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  margin: 0;
+  text-wrap: balance;
+}
+
+a { color: inherit; }
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--brass-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: color-mix(in srgb, var(--brass) 30%, transparent); }
+
+/* ---------------------------------------------------------------------------
+   Layout helpers
+--------------------------------------------------------------------------- */
+.shell {
+  width: 100%;
+  max-width: 82.5rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 4.5rem);
+}
+.measure { max-width: 68ch; }
+.measure-tight { max-width: 40rem; }
+
+.section { padding-block: clamp(4.5rem, 11vw, 12.5rem); }
+.section-tight { padding-block: clamp(3.5rem, 7vw, 7rem); }
+
+.ground-dark {
+  background: var(--slate);
+  color: var(--on-slate);
+}
+.ground-dark .eyebrow { color: var(--on-slate-muted); }
+.ground-dark hr, .ground-dark .rule { border-color: var(--rule-invert); }
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.25rem;
+}
+
+.display-xl { font-size: clamp(2.75rem, 8.5vw, 7.5rem); font-variation-settings: "opsz" 144, "wght" 400; letter-spacing: -0.035em; line-height: 0.95; }
+.display-l  { font-size: clamp(2.125rem, 5.2vw, 4.25rem); font-variation-settings: "opsz" 120, "wght" 400; letter-spacing: -0.03em; }
+.display-m  { font-size: clamp(1.5rem, 2.8vw, 2.25rem); font-variation-settings: "opsz" 72, "wght" 400; letter-spacing: -0.02em; }
+
+.lede { font-size: clamp(1.125rem, 1.6vw, 1.3125rem); line-height: 1.55; color: var(--ink); }
+.prose p { margin: 0 0 1.35em; }
+.prose p:last-child { margin-bottom: 0; }
+
+.rule { border: 0; border-top: 1px solid var(--rule); margin: 0; }
+
+.data-figure {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "ss01";
+  letter-spacing: -0.02em;
+}
+
+/* Scroll reveal — opt-in, motion-gated, no library. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 620ms var(--ease-out-expo), transform 620ms var(--ease-out-expo);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal].is-in { opacity: 1; transform: none; }
+  [data-reveal-image] img { transform: scale(1.04); transition: transform 900ms var(--ease-out-expo); }
+  [data-reveal-image].is-in img { transform: scale(1); }
+}
+
+/* Horizontally scrollable containers (tables, timeline, plan) */
+.scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+@media print {
+  .no-print { display: none !important; }
+}

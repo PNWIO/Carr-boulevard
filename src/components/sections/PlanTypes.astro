@@ -1,0 +1,120 @@
+---
+import { Image } from "astro:assets";
+import { planTypes, program } from "~/data/project";
+
+import a from "~/assets/img/plan-24x45-2car-front.jpg";
+import b from "~/assets/img/plan-20x45-1car-front.jpg";
+import c from "~/assets/img/plan-24x45-2car-rear.jpg";
+import d from "~/assets/img/plan-20x45-2car-rear.jpg";
+import e from "~/assets/img/plan-15x45-tandem-rear.jpg";
+import f from "~/assets/img/plan-24x30-1car.jpg";
+
+const images: Record<string, ImageMetadata> = {
+  "24x45-2car-front": a,
+  "20x45-1car-front": b,
+  "24x45-2car-rear": c,
+  "20x45-2car-rear": d,
+  "15x45-tandem-rear": e,
+  "24x30-1car": f,
+};
+---
+
+<section class="section plans ground-dark" aria-labelledby="plans-h">
+  <div class="shell">
+    <div class="head">
+      <div>
+        <p class="eyebrow">The product</p>
+        <h2 id="plans-h" class="display-l">Six plan types across {program.totalUnits} homes.</h2>
+      </div>
+      <p class="note">
+        Elevations from the architecture set filed with the August 2026 application. Counts sum
+        to the full thirty-eight. Every plan is 2.5 bath.
+      </p>
+    </div>
+
+    <ol class="grid">
+      {planTypes.map((p, i) => (
+        <li class="card" data-reveal style={`--reveal-delay:${(i % 3) * 70}ms`}>
+          <div class="thumb" data-reveal-image>
+            <Image
+              src={images[p.image]}
+              alt={`${p.footprint} plan type ${p.id}: ${p.beds} bedroom attached home with ${p.garage.toLowerCase()}.`}
+              widths={[420, 720, 1040]}
+              sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
+              quality={74}
+              format="avif"
+              densities={undefined}
+            />
+          </div>
+          <div class="body">
+            <p class="type">
+              <span class="letter">Type {p.id}</span>
+              <span class="count">{p.units} homes</span>
+            </p>
+            <p class="dims">{p.footprint}</p>
+            <p class="spec">
+              {p.beds} bed{"note" in p && p.note ? ` ${p.note}` : ""} · {p.baths} bath
+            </p>
+            <p class="garage">{p.garage}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <p class="foot">
+      Footprint dimensions are building footprints, not finished area. Floor plans and finished
+      areas for every type are in the architecture set — <a href="/data-room">available in the data room</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: 3rem;
+  }
+  @media (max-width: 860px) { .head { grid-template-columns: 1fr; align-items: start; } }
+  h2 { max-width: 17ch; }
+  .note { font-size: 0.8125rem; color: var(--on-slate-muted); margin: 0; line-height: 1.6; max-width: 42ch; }
+
+  .grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px; background: var(--rule-invert); border: 1px solid var(--rule-invert);
+  }
+  @media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+  .card { background: var(--slate); display: flex; flex-direction: column; }
+  .thumb {
+    background: color-mix(in srgb, var(--on-slate) 6%, transparent);
+    aspect-ratio: 16 / 9; overflow: hidden; max-width: 100%;
+  }
+  .thumb :global(img) { width: 100%; height: 100%; object-fit: cover; }
+
+  .body { padding: 1.35rem 1.5rem 1.6rem; }
+  .type {
+    display: flex; justify-content: space-between; align-items: baseline;
+    gap: 1rem; margin: 0 0 0.9rem;
+    padding-bottom: 0.75rem; border-bottom: 1px solid var(--rule-invert);
+  }
+  .letter {
+    font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--brass-on-dark);
+  }
+  .count { font-size: 0.75rem; color: var(--on-slate-muted); white-space: nowrap; }
+  .dims {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 72, "wght" 400;
+    font-size: clamp(1.5rem, 2.4vw, 2rem); letter-spacing: -0.025em;
+    margin: 0 0 0.35rem;
+  }
+  .spec { margin: 0 0 0.2rem; font-size: 0.9375rem; }
+  .garage { margin: 0; font-size: 0.8125rem; color: var(--on-slate-muted); }
+
+  .foot {
+    margin: 2rem 0 0; font-size: 0.8125rem; color: var(--on-slate-muted);
+    max-width: 60ch; line-height: 1.6;
+  }
+  .foot a { color: var(--brass-on-dark); text-decoration: underline; text-underline-offset: 3px; }
+</style>

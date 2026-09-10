@@ -1,0 +1,68 @@
+[
+  {
+    "id": "pre-app",
+    "date": "October 2025",
+    "sortKey": "2025-10-14",
+    "title": "Pre-application conference",
+    "status": "Complete",
+    "authority": "City of Bremerton — Department of Community Development",
+    "reference": "File BP25 00378",
+    "body": "Pre-application conference held with the City on the four-parcel assemblage, establishing the plat configuration, frontage improvement scope and open space requirements the June 2026 engineering set was drawn to."
+  },
+  {
+    "id": "civil-set",
+    "date": "June 23, 2026",
+    "sortKey": "2026-06-23",
+    "title": "Preliminary civil improvement plans signed",
+    "status": "Complete",
+    "authority": "N.L. Olson & Associates, Inc.",
+    "reference": "Project 25-13629",
+    "body": "Signed preliminary plat map, site plan, storm and grading plan, phasing plan, profiles and sections, together with the geotechnical engineering report, storm drainage analysis and photometric plan."
+  },
+  {
+    "id": "sepa",
+    "date": "July 29, 2026",
+    "sortKey": "2026-07-29",
+    "title": "SEPA checklist signed",
+    "status": "Complete",
+    "authority": "City of Bremerton — SEPA responsible official",
+    "body": "Environmental checklist executed and submitted with the application package."
+  },
+  {
+    "id": "submittal",
+    "date": "August 5, 2026",
+    "sortKey": "2026-08-05",
+    "title": "Preliminary plat and site development permit submitted",
+    "status": "In review",
+    "authority": "City of Bremerton",
+    "reference": "Project 25-13629",
+    "body": "Full application filed: preliminary plat application, legal descriptions for all four parcels, signed civil improvement plans, geotechnical report, storm drainage analysis, traffic count by Heath & Associates, tree report, photometric plan, utility availability letter, architecture and unit mix. Currently under City review."
+  },
+  {
+    "id": "plat-approval",
+    "date": "Next",
+    "sortKey": "2026-12-31",
+    "title": "Preliminary plat approval",
+    "status": "Scheduled",
+    "authority": "City of Bremerton",
+    "body": "The seller's deliverable, and the closing condition on offer. Timing is at the City's discretion and is not warranted."
+  },
+  {
+    "id": "civil-permit",
+    "date": "Buyer scope",
+    "sortKey": "2027-01-01",
+    "title": "Civil construction permit",
+    "status": "Scheduled",
+    "authority": "City of Bremerton",
+    "body": "Post-approval conditions, final engineering and the civil construction permit pass to the buyer at closing."
+  },
+  {
+    "id": "building-permits",
+    "date": "Buyer scope",
+    "sortKey": "2027-06-01",
+    "title": "Building permits",
+    "status": "Scheduled",
+    "authority": "City of Bremerton",
+    "body": "Vertical permitting on the buyer's plans and schedule. The architecture set for all thirty-eight homes conveys with the sale."
+  }
+]

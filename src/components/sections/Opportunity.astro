@@ -1,0 +1,102 @@
+---
+import { Image } from "astro:assets";
+import axon from "~/assets/img/massing-axon-crop.jpg";
+import { site, program, offering } from "~/data/project";
+---
+
+<section class="section opportunity" aria-labelledby="opp-h">
+  <div class="shell grid">
+    <div class="text" data-reveal>
+      <p class="eyebrow">The opportunity</p>
+      <h2 id="opp-h" class="display-l">
+        Thirty-eight homes, engineered and in review, five minutes from the shipyard.
+      </h2>
+
+      <div class="prose measure">
+        <p>
+          Four parcels on Carr Boulevard at Kitsap Way have been assembled into a single
+          {" "}{site.totalAcres}-acre development site — {site.totalSF.toLocaleString()} square feet,
+          zoned {site.zoning.toLowerCase()}. The plat lays out {program.totalUnits} lots for
+          fee-simple attached single-family homes across six plan types, with
+          {" "}{site.openSpaceSF.toLocaleString()} SF of open space in tracts {site.tracts},
+          {" "}{site.guestStalls} guest stalls and a stormwater pond.
+        </p>
+        <p>
+          The work a builder would otherwise carry has been done. Signed preliminary civil
+          improvement plans, a geotechnical report, a storm drainage analysis, a traffic count,
+          a tree report, a photometric plan, a utility availability letter and full architecture
+          for all thirty-eight homes went to the City of Bremerton on August 5, 2026 with the
+          preliminary plat and site development permit application. That package is in review now.
+        </p>
+        <p>
+          The offer is structured so that review risk stays with the seller.
+          {" "}{offering.closingCondition} — {offering.closingNote.toLowerCase()}
+          {" "}Unit lot subdivision is an active part of the entitlement approach, which is what
+          lets a builder convey each attached home fee-simple rather than as a condominium.
+        </p>
+        <p>
+          The six-lot parcel on the commercial frontage carries its own optionality: hold it,
+          build it for sale, or dispose of it separately, without touching the thirty-two lots behind.
+        </p>
+      </div>
+
+      <a class="inline-link" href="/offering">Read the full offering summary</a>
+    </div>
+
+    <figure class="fig" data-reveal data-reveal-image>
+      <Image
+        src={axon}
+        alt="Axonometric massing study of the thirty-eight attached homes on the Carr Boulevard plat, with Kitsap Way along the north edge and the private drive loop through the centre."
+        widths={[600, 900, 1300]}
+        sizes="(max-width: 960px) 92vw, 42vw"
+        quality={78}
+        format="avif"
+      />
+      <figcaption>
+        Massing study over the preliminary plat layout. Thirty-two lots on parcels 2–4, six on the
+        General Commercial frontage parcel.
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+  @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+
+  h2 { margin-bottom: 2.25rem; max-width: 18ch; }
+  .prose { color: var(--muted); }
+  .prose p:first-child { color: var(--ink); font-size: 1.125rem; }
+
+  .inline-link {
+    display: inline-block;
+    margin-top: 2rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--brass-ink);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.2rem;
+  }
+
+  .fig { margin: 0; position: sticky; top: 6rem; }
+  @media (max-width: 960px) { .fig { position: static; } }
+  .fig :global(img) {
+    width: 100%;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+  }
+  figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--muted);
+    max-width: 44ch;
+  }
+</style>

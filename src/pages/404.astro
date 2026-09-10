@@ -1,0 +1,36 @@
+---
+import Base from "~/layouts/Base.astro";
+import { seller } from "~/data/project";
+---
+<Base title="Page not found — Carr Boulevard Townhomes" description="That page doesn't exist." path="/404">
+  <section class="nf">
+    <div class="shell">
+      <p class="eyebrow">404</p>
+      <h1 class="display-l">That page isn't part of this offering.</h1>
+      <p class="lede measure-tight">
+        It may have moved, or the link may be from an older version of the package.
+      </p>
+      <ul class="links">
+        <li><a href="/">Overview</a></li>
+        <li><a href="/offering">Offering summary</a></li>
+        <li><a href="/site-plan">Site plan and unit schedule</a></li>
+        <li><a href="/data-room">Data room</a></li>
+      </ul>
+      <p class="alt">
+        Or email <a href={`mailto:${seller.email}`}>{seller.email}</a> and Ian will send you what you were after.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding-block: clamp(5rem, 14vw, 12rem); }
+  h1 { max-width: 16ch; margin-bottom: 1.5rem; }
+  .lede { color: var(--muted); margin: 0 0 2.5rem; }
+  .links { list-style: none; margin: 0 0 2.5rem; padding: 0; border-top: 1px solid var(--rule); max-width: 30rem; }
+  .links li { border-bottom: 1px solid var(--rule); }
+  .links a { display: block; padding: 0.85rem 0; text-decoration: none; font-size: 0.9375rem; }
+  .links a:hover { color: var(--brass-ink); }
+  .alt { font-size: 0.875rem; color: var(--muted); }
+  .alt a { color: var(--brass-ink); }
+</style>

@@ -1,0 +1,50 @@
+---
+import { team, offering } from "~/data/project";
+---
+
+<section class="section-tight team" aria-labelledby="team-h">
+  <div class="shell">
+    <p class="eyebrow">Development team</p>
+    <h2 id="team-h" class="display-l">Who did the work.</h2>
+
+    <ol class="list">
+      {team.map((t, i) => (
+        <li data-reveal style={`--reveal-delay:${i * 70}ms`}>
+          <p class="role">{t.role}</p>
+          <h3 class="name">{t.name}</h3>
+          <p class="detail">{t.detail}</p>
+        </li>
+      ))}
+    </ol>
+
+    <p class="structure">
+      {offering.structure} {offering.assignment}. {offering.diligence}
+    </p>
+  </div>
+</section>
+
+<style>
+  h2 { margin-bottom: 3rem; max-width: 14ch; }
+  .list {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px; background: var(--rule); border-block: 1px solid var(--rule);
+  }
+  @media (max-width: 900px) { .list { grid-template-columns: 1fr; } }
+  .list li { background: var(--paper); padding: 2rem 1.75rem 2.25rem 0; }
+  @media (min-width: 901px) { .list li + li { padding-left: 1.75rem; } }
+  .role {
+    font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--brass-ink); margin: 0 0 0.85rem;
+  }
+  .name {
+    font-family: var(--font-display); font-variation-settings: "opsz" 60, "wght" 400;
+    font-size: clamp(1.25rem, 2vw, 1.625rem); letter-spacing: -0.022em;
+    line-height: 1.15; margin: 0 0 0.9rem;
+  }
+  .detail { margin: 0; font-size: 0.875rem; line-height: 1.65; color: var(--muted); }
+  .structure {
+    margin: 2.5rem 0 0; max-width: 66ch; font-size: 0.9375rem;
+    line-height: 1.65; color: var(--muted);
+  }
+</style>

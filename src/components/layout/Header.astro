@@ -1,0 +1,131 @@
+---
+import { project } from "~/data/project";
+
+interface Props { transparent?: boolean }
+const { transparent = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const nav = [
+  { href: "/offering", label: "Offering" },
+  { href: "/site-plan", label: "Site plan" },
+  { href: "/location", label: "Location" },
+  { href: "/data-room", label: "Data room" },
+];
+---
+
+<header data-header class:list={["site-header", { transparent }]}>
+  <div class="shell bar">
+    <a href="/" class="mark">
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
+        <path d="M3 3h7v3.2H6.2V21H3V3Z" fill="currentColor" />
+        <path d="M21 21h-7v-3.2h3.8V3H21v18Z" fill="currentColor" />
+        <path d="M9.4 9.4h5.2v5.2H9.4z" fill="currentColor" opacity=".55" />
+      </svg>
+      <span class="mark-text">
+        <strong>{project.shortName}</strong>
+        <span>{project.city}, {project.state}</span>
+      </span>
+    </a>
+
+    <nav aria-label="Primary">
+      <ul>
+        {nav.map((n) => (
+          <li>
+            <a href={n.href} aria-current={path === n.href ? "page" : undefined}>{n.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a class="cta" href="/inquire">Enquire</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    transition: background 300ms var(--ease-out-expo), border-color 300ms var(--ease-out-expo), color 300ms var(--ease-out-expo);
+  }
+  .site-header.transparent {
+    background: transparent;
+    border-bottom-color: transparent;
+    color: #f4f1ec;
+  }
+  .site-header.transparent .mark-text span { color: var(--on-slate-muted); }
+  .site-header.transparent.is-stuck {
+    background: color-mix(in srgb, var(--slate) 94%, transparent);
+    border-bottom-color: var(--rule-invert);
+    backdrop-filter: saturate(140%) blur(8px);
+  }
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: 4.25rem;
+  }
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    margin-right: auto;
+  }
+  .mark-text { display: flex; flex-direction: column; line-height: 1.15; }
+  .mark-text strong {
+    font-family: var(--font-display);
+    font-variation-settings: "opsz" 40, "wght" 500;
+    font-weight: 500;
+    font-size: 1.0625rem;
+    letter-spacing: -0.015em;
+  }
+  .mark-text span {
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  nav ul {
+    display: flex;
+    gap: 1.85rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    text-decoration: none;
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    padding-block: 0.4rem;
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms;
+  }
+  nav a:hover { border-bottom-color: currentColor; }
+  nav a[aria-current="page"] { border-bottom-color: var(--brass); }
+  .cta {
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: 1px solid currentColor;
+    padding: 0.6rem 1.15rem;
+    white-space: nowrap;
+    transition: background 200ms, color 200ms;
+  }
+  .cta:hover { background: var(--brass); border-color: var(--brass); color: #fff; }
+
+  @media (max-width: 860px) {
+    nav { order: 3; width: 100%; border-top: 1px solid var(--rule); }
+    .site-header.transparent nav { border-top-color: rgb(255 255 255 / 0.16); }
+    nav ul { gap: 1.25rem; padding-block: 0.7rem; overflow-x: auto; scrollbar-width: none; }
+    nav a { white-space: nowrap; font-size: 0.78125rem; }
+    .bar { flex-wrap: wrap; padding-block: 0.55rem; min-height: 0; }
+    .mark-text span { display: none; }
+  }
+  @media (max-width: 420px) {
+    .cta { padding: 0.5rem 0.85rem; font-size: 0.6875rem; }
+  }
+</style>

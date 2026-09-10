@@ -1,0 +1,10 @@
+# www -> apex
+https://www.homesoncarr.com/*  https://homesoncarr.com/:splat  301!
+
+# Friendlier aliases used in emails and print
+/offering-memorandum  /offering    301
+/om                   /offering    301
+/plans                /site-plan   301
+/units                /site-plan   301
+/dataroom             /data-room   301
+/contact              /inquire     301

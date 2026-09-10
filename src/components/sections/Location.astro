@@ -1,0 +1,184 @@
+---
+import { driveTimes, employmentStats, marketStats, comps, compsNote, project } from "~/data/project";
+
+/** Context diagram — deliberately schematic, not a map. Angles are arranged for legibility;
+ *  only the drive times are data. A true static map is listed in NEEDS-FROM-IAN.md. */
+const spokes = driveTimes.map((d, i) => {
+  const angle = (-100 + i * 47) * (Math.PI / 180);
+  const r = 118 + (i % 2) * 26;
+  return { ...d, x: 200 + Math.cos(angle) * r, y: 170 + Math.sin(angle) * r, anchor: Math.cos(angle) < -0.2 ? "end" : Math.cos(angle) > 0.2 ? "start" : "middle" };
+});
+---
+
+<section class="section location" aria-labelledby="loc-h">
+  <div class="shell">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Location and market</p>
+        <h2 id="loc-h" class="display-l">On the Kitsap Way corridor, minutes from the shipyard.</h2>
+      </div>
+      <p class="note">
+        Carr Boulevard sits just off Kitsap Way at Lyle Avenue — the retail spine between
+        downtown Bremerton and Silverdale, with grocery, services and transit on the corridor.
+      </p>
+    </div>
+
+    <div class="split">
+      <figure class="diagram" data-reveal>
+        <svg viewBox="0 0 400 340" role="img" aria-labelledby="dia-t dia-d">
+          <title id="dia-t">Drive times from Carr Boulevard</title>
+          <desc id="dia-d">
+            A schematic diagram, not a map. Carr Boulevard at the centre, with approximate drive
+            times to five destinations: Puget Sound Naval Shipyard five minutes, the Bremerton
+            fast ferry seven minutes, Olympic College five minutes, St. Michael Medical Center ten
+            minutes, and the Silverdale retail core twelve minutes.
+          </desc>
+          {spokes.map((s) => (
+            <line x1="200" y1="170" x2={s.x} y2={s.y} class="spoke" />
+          ))}
+          {[70, 110, 150].map((r) => <circle cx="200" cy="170" r={r} class="ring" />)}
+          {spokes.map((s) => (
+            <g>
+              <circle cx={s.x} cy={s.y} r="4.5" class="node" />
+              <text x={s.x + (s.anchor === "end" ? -10 : s.anchor === "start" ? 10 : 0)} y={s.y - 9} text-anchor={s.anchor} class="lbl-min">{s.minutes} min</text>
+              <text x={s.x + (s.anchor === "end" ? -10 : s.anchor === "start" ? 10 : 0)} y={s.y + 4} text-anchor={s.anchor} class="lbl">{s.place.split(" (")[0]}</text>
+            </g>
+          ))}
+          <circle cx="200" cy="170" r="9" class="site" />
+          <text x="200" y="196" text-anchor="middle" class="site-lbl">Carr Boulevard</text>
+        </svg>
+        <figcaption>
+          Schematic, not to scale. Drive times are approximate and are offered for orientation only.
+        </figcaption>
+      </figure>
+
+      <div class="side">
+        <h3 class="sub">Employment</h3>
+        <ul class="stats">
+          {employmentStats.map((s) => (
+            <li>
+              <p class="fig data-figure">{s.value}</p>
+              <p class="lbl-txt">{s.label}</p>
+              <p class="src">{s.source} · {s.sourceDate}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="market">
+      <h3 class="sub">Bremerton market snapshot</h3>
+      <dl class="market-grid">
+        {marketStats.map((m) => (
+          <div>
+            <dt class="data-figure">{m.value}</dt>
+            <dd>{m.label}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="src">
+        {marketStats[0]!.source} · {marketStats[0]!.sourceDate}.
+      </p>
+    </div>
+
+    <div class="comps">
+      <h3 class="sub">New construction nearby</h3>
+      <div class="scroll-x">
+        <table>
+          <caption class="sr">Starting prices at nearby new-construction communities.</caption>
+          <thead>
+            <tr><th scope="col">Builder</th><th scope="col">Community</th><th scope="col" class="num">From</th><th scope="col">Size</th></tr>
+          </thead>
+          <tbody>
+            {comps.map((c) => (
+              <tr>
+                <th scope="row">{c.builder}</th>
+                <td>{c.community}</td>
+                <td class="num">{c.from}</td>
+                <td class="muted">{c.size ?? "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="comps-note">
+        <strong class="data-figure">{compsNote.value}</strong> {compsNote.label} Fee-simple attached
+        homes with garages at Carr Boulevard price under the detached product while sitting closest
+        to the shipyard, the ferry and the Kitsap Way corridor.
+      </p>
+      <p class="src">{compsNote.source} · {compsNote.sourceDate}.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem); align-items: end; margin-bottom: 3.25rem;
+  }
+  @media (max-width: 860px) { .head { grid-template-columns: 1fr; align-items: start; } }
+  h2 { max-width: 18ch; }
+  .head .note { font-size: 0.875rem; color: var(--muted); margin: 0; line-height: 1.65; max-width: 44ch; }
+
+  .sub {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 500;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+    margin: 0 0 1.5rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--rule);
+  }
+
+  .split {
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem); align-items: start; margin-bottom: clamp(3rem, 7vw, 6rem);
+  }
+  @media (max-width: 900px) { .split { grid-template-columns: 1fr; } }
+
+  .diagram { margin: 0; }
+  .diagram svg { width: 100%; height: auto; background: var(--paper-2); border: 1px solid var(--rule); }
+  .ring { fill: none; stroke: var(--rule); stroke-width: 1; opacity: 0.7; }
+  .spoke { stroke: var(--rule); stroke-width: 1; }
+  .node { fill: var(--paper); stroke: var(--brass); stroke-width: 1.6; }
+  .site { fill: var(--ink); }
+  .site-lbl {
+    fill: var(--ink); font-family: var(--font-sans); font-size: 10px; font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .lbl-min { fill: var(--brass-ink); font-family: var(--font-sans); font-size: 11px; font-weight: 500; }
+  .lbl { fill: var(--muted); font-family: var(--font-sans); font-size: 9px; }
+  figcaption { margin-top: 0.85rem; font-size: 0.75rem; color: var(--muted); }
+
+  .stats { list-style: none; margin: 0; padding: 0; }
+  .stats li { padding-bottom: 1.75rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--rule); }
+  .stats li:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  .fig {
+    font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.035em; line-height: 1;
+    margin: 0 0 0.6rem;
+  }
+  .lbl-txt { margin: 0 0 0.5rem; font-size: 0.9375rem; line-height: 1.5; max-width: 40ch; }
+  .src { font-size: 0.6875rem; color: var(--muted); margin: 0; opacity: 0.9; }
+
+  .market { margin-bottom: clamp(3rem, 7vw, 6rem); }
+  .market-grid {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem 2rem; margin: 0 0 1.25rem;
+  }
+  @media (max-width: 760px) { .market-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .market-grid dt { font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -0.03em; line-height: 1.05; }
+  .market-grid dd { margin: 0.45rem 0 0; font-size: 0.8125rem; color: var(--muted); line-height: 1.45; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 34rem; }
+  thead th {
+    text-align: left; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); font-weight: 500; padding: 0 0 0.75rem; border-bottom: 1px solid var(--rule);
+  }
+  tbody th { text-align: left; font-weight: 500; }
+  tbody th, tbody td { padding: 0.85rem 1rem 0.85rem 0; border-bottom: 1px solid var(--rule); }
+  .num { text-align: right; padding-right: 1.5rem !important; font-variant-numeric: tabular-nums; }
+  .muted { color: var(--muted); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .comps-note {
+    margin: 1.5rem 0 0.75rem; max-width: 64ch; font-size: 0.9375rem;
+    line-height: 1.6; color: var(--muted);
+  }
+  .comps-note strong { color: var(--ink); font-weight: 500; }
+</style>

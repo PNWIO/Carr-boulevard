@@ -1,0 +1,39 @@
+{
+  "name": "homesoncarr",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "node scripts/gen-icons.mjs && node scripts/gen-og.mjs",
+    "build": "astro build && node scripts/gen-headers.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "verify": "node scripts/verify-contrast.mjs",
+    "siteplan:rebuild": "python3 scripts/extract-siteplan.py && node scripts/build-siteplan.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "astro": "^5.1.1",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@cloudflare/workers-types": "^5.20260908.1",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.10.2",
+    "opentype.js": "^2.0.0",
+    "playwright-core": "^1.63.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild"
+    ]
+  }
+}

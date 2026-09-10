@@ -1,0 +1,17 @@
+---
+interface Props { eyebrow: string; title: string; lede?: string }
+const { eyebrow, title, lede } = Astro.props;
+---
+<section class="page-head">
+  <div class="shell">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="display-l">{title}</h1>
+    {lede ? <p class="lede measure">{lede}</p> : null}
+  </div>
+</section>
+
+<style>
+  .page-head { padding-block: clamp(3.5rem, 8vw, 7rem) clamp(2rem, 4vw, 3.5rem); }
+  h1 { max-width: 18ch; }
+  .lede { margin: 1.75rem 0 0; color: var(--muted); }
+</style>

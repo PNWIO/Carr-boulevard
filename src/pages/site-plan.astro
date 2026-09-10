@@ -1,0 +1,23 @@
+---
+import Base from "~/layouts/Base.astro";
+import SitePlan from "~/components/sections/SitePlan.astro";
+import UnitMatrix from "~/components/sections/UnitMatrix.astro";
+import PlanTypes from "~/components/sections/PlanTypes.astro";
+import PageHead from "~/components/layout/PageHead.astro";
+import { site, program } from "~/data/project";
+---
+
+<Base
+  title="Site plan and unit schedule — Carr Boulevard Townhomes"
+  description="Interactive site plan drawn from the signed preliminary plat base drawing: 38 lots, six plan types, open space tracts and the stormwater pond, with the full unit schedule."
+  path="/site-plan"
+>
+  <PageHead
+    eyebrow="Site plan"
+    title="Thirty-eight lots on four point zero eight acres."
+    lede={`Laid out across four assembled parcels — ${site.parcels234SF.toLocaleString()} SF on parcels 2 through 4 carrying ${program.lotsParcels234} lots, and the ${site.parcel1SF.toLocaleString()} SF General Commercial frontage parcel carrying ${program.lotsParcel1}.`}
+  />
+  <SitePlan />
+  <UnitMatrix />
+  <PlanTypes />
+</Base>
