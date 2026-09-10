@@ -30,6 +30,11 @@ p + p {
 }
 
 .link {
-  color: #0b5fff;
+  color: #003a8c;
   font-weight: 600;
+}
+
+.link:focus-visible {
+  outline: 3px solid #003a8c;
+  outline-offset: 3px;
 }
