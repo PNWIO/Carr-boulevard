@@ -24,3 +24,12 @@ h1 {
 p {
   margin: 0;
 }
+
+p + p {
+  margin-top: 1rem;
+}
+
+.link {
+  color: #0b5fff;
+  font-weight: 600;
+}
