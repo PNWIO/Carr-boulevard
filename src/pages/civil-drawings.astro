@@ -1,80 +1,54 @@
 ---
 import Base from "~/layouts/Base.astro";
 import PageHead from "~/components/layout/PageHead.astro";
-
-const pdfPath = "/carr-blvd-preliminary-civil-plans-signed-2026-06-23.pdf";
+const downloadPath = "/carr-blvd-preliminary-civil-plans-signed-2026-06-23.pdf";
 const pdfTitle = "Signed preliminary civil plans — June 23, 2026";
 ---
-
-<Base
-  title="Civil Drawings — Carr Boulevard Townhomes"
-  description="View the signed preliminary civil plans for Carr Boulevard Townhomes, dated June 23, 2026."
-  path="/civil-drawings"
->
-  <PageHead
-    eyebrow="Civil drawings"
-    title="Signed preliminary civil plans"
-    lede="Preliminary civil improvement plans signed June 23, 2026."
-  />
-
-  <section class="viewer-section section-tight">
-    <div class="shell">
-      <div class="viewer-card" data-reveal>
-        <div class="viewer-bar">
-          <p>{pdfTitle}</p>
-          <a href={pdfPath} target="_blank" rel="noopener">Open PDF in a new tab</a>
-        </div>
-        <iframe
-          src={pdfPath}
-          title={pdfTitle}
-          loading="lazy"
-          class="pdf-viewer"
-        ></iframe>
-        <p class="viewer-fallback">
-          If the document does not display in your browser,
-          <a href={pdfPath} target="_blank" rel="noopener">open the PDF in a new tab</a>
-          or <a href={pdfPath} download>download the signed plans</a>.
-        </p>
-      </div>
+<Base title="Civil Drawings — Carr Boulevard Townhomes" description="View the signed preliminary civil plans for Carr Boulevard Townhomes, dated June 23, 2026." path="/civil-drawings">
+  <PageHead eyebrow="Civil drawings" title="Signed preliminary civil plans" lede="Preliminary civil improvement plans signed June 23, 2026." />
+  <section class="viewer-section section-tight"><div class="shell"><div class="viewer-card" data-reveal>
+    <div class="viewer-bar"><p>{pdfTitle}</p><div class="viewer-links"><a href={downloadPath} target="_blank" rel="noopener">Open PDF in a new tab</a><a href={downloadPath} download>Download</a></div></div>
+    <div class="viewer-controls" aria-label="PDF controls">
+      <button type="button" id="previous-page" disabled>Previous</button>
+      <label for="page-select">Page <select id="page-select" aria-label="Select PDF page" disabled></select></label>
+      <button type="button" id="next-page" disabled>Next</button><span class="control-divider" aria-hidden="true"></span>
+      <button type="button" id="zoom-out" disabled aria-label="Zoom out">−</button><output id="zoom-level" aria-live="polite">Fit</output><button type="button" id="zoom-in" disabled aria-label="Zoom in">+</button>
     </div>
-  </section>
+    <div class="canvas-wrap" id="canvas-wrap"><p class="viewer-status" id="viewer-status" role="status">Loading signed civil plans…</p><canvas id="pdf-canvas" aria-label={pdfTitle}></canvas></div>
+    <p class="viewer-fallback" id="viewer-fallback" hidden>The inline viewer could not load this document. <a href={downloadPath} target="_blank" rel="noopener">Open the PDF in a new tab</a> or <a href={downloadPath} download>download the signed plans</a>.</p>
+  </div></div></section>
 </Base>
-
+<script is:inline type="module">
+  import { GlobalWorkerOptions, getDocument } from "/pdf.min.mjs";
+  const pdfUrl = "/carr-blvd-preliminary-civil-plans-signed-2026-06-23.pdf?v=20260623";
+  GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
+  const canvas = document.querySelector("#pdf-canvas"), wrap = document.querySelector("#canvas-wrap"), status = document.querySelector("#viewer-status"), fallback = document.querySelector("#viewer-fallback"), select = document.querySelector("#page-select"), previous = document.querySelector("#previous-page"), next = document.querySelector("#next-page"), zoomIn = document.querySelector("#zoom-in"), zoomOut = document.querySelector("#zoom-out"), zoomLabel = document.querySelector("#zoom-level"), ctx = canvas?.getContext("2d", { alpha: false });
+  let pdf, pageNumber = 1, zoom = 1, renderTask, renderId = 0;
+  const setEnabled = (enabled) => [select, previous, next, zoomIn, zoomOut].forEach((control) => { control.disabled = !enabled; });
+  const showError = (error) => { console.error("Civil drawings viewer failed", error); setEnabled(false); status.hidden = true; fallback.hidden = false; };
+  const renderPage = async () => {
+    if (!pdf || !ctx || !wrap) return;
+    const current = ++renderId;
+    if (renderTask) { renderTask.cancel(); await renderTask.promise.catch(() => {}); }
+    if (current !== renderId) return;
+    const page = await pdf.getPage(pageNumber), base = page.getViewport({ scale: 1 });
+    if (current !== renderId) return;
+    const fit = Math.max((wrap.clientWidth - 32) / base.width, 0.05), scale = fit * zoom, viewport = page.getViewport({ scale }), dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(viewport.width * dpr); canvas.height = Math.floor(viewport.height * dpr); canvas.style.width = `${viewport.width}px`; canvas.style.height = `${viewport.height}px`;
+    renderTask = page.render({ canvasContext: ctx, viewport, transform: [dpr, 0, 0, dpr, 0, 0] });
+    try { await renderTask.promise; if (current === renderId) { status.textContent = `Page ${pageNumber} of ${pdf.numPages}`; zoomLabel.textContent = zoom === 1 ? "Fit" : `${Math.round(zoom * 100)}%`; zoomOut.disabled = zoom <= 0.5; zoomIn.disabled = zoom >= 3; } } catch (error) { if (error?.name !== "RenderingCancelledException") throw error; }
+  };
+  const selectPage = (value) => { pageNumber = Math.min(Math.max(Number(value), 1), pdf.numPages); select.value = String(pageNumber); previous.disabled = pageNumber === 1; next.disabled = pageNumber === pdf.numPages; renderPage().catch(showError); };
+  previous.addEventListener("click", () => selectPage(pageNumber - 1)); next.addEventListener("click", () => selectPage(pageNumber + 1)); select.addEventListener("change", (event) => selectPage(event.target.value));
+  zoomIn.addEventListener("click", () => { zoom = Math.min((zoom || 1) + 0.25, 3); renderPage().catch(showError); }); zoomOut.addEventListener("click", () => { zoom = Math.max((zoom || 1) - 0.25, 0.5); renderPage().catch(showError); });
+  let previousWidth = 0;
+  new ResizeObserver(() => { if (pdf && wrap.clientWidth !== previousWidth) { previousWidth = wrap.clientWidth; renderPage().catch(showError); } }).observe(wrap);
+  getDocument({ url: pdfUrl, isEvalSupported: false }).promise.then((loaded) => { pdf = loaded; for (let page = 1; page <= pdf.numPages; page += 1) { const option = document.createElement("option"); option.value = String(page); option.textContent = String(page); select.append(option); } select.value = "1"; setEnabled(true); previous.disabled = true; next.disabled = pdf.numPages === 1; renderPage().catch(showError); }).catch(showError);
+</script>
 <style>
-  .viewer-section { padding-top: 0; }
-  .viewer-card {
-    overflow: hidden;
-    border: 1px solid var(--rule);
-    background: var(--paper-2);
-    box-shadow: var(--shadow-card);
-  }
-  .viewer-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  .viewer-bar p { margin: 0; font-size: 0.9375rem; font-weight: 500; }
-  .viewer-bar a, .viewer-fallback a { color: var(--brass-ink); }
-  .viewer-bar a { white-space: nowrap; font-size: 0.875rem; }
-  .pdf-viewer {
-    display: block;
-    width: 100%;
-    height: min(78vh, 64rem);
-    min-height: 36rem;
-    border: 0;
-    background: #fff;
-  }
-  .viewer-fallback {
-    margin: 0;
-    padding: 1rem 1.25rem;
-    color: var(--muted);
-    font-size: 0.875rem;
-  }
-  @media (max-width: 620px) {
-    .viewer-bar { align-items: flex-start; flex-direction: column; }
-    .pdf-viewer { height: 70vh; min-height: 28rem; }
-  }
+  .viewer-section { padding-top: 0; }.viewer-card { overflow: hidden; border: 1px solid var(--rule); background: var(--paper-2); box-shadow: var(--shadow-card); }.viewer-bar, .viewer-controls { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; }.viewer-bar { justify-content: space-between; border-bottom: 1px solid var(--rule); }.viewer-bar p { margin: 0; font-size: .9375rem; font-weight: 500; }.viewer-links { display: flex; gap: 1rem; }.viewer-bar a, .viewer-fallback a { color: var(--brass-ink); }.viewer-bar a { white-space: nowrap; font-size: .875rem; }.viewer-controls { flex-wrap: wrap; border-bottom: 1px solid var(--rule); font-size: .875rem; }.viewer-controls button { min-width: 2.25rem; padding: .35rem .65rem; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: inherit; cursor: pointer; }.viewer-controls button:disabled { opacity: .45; cursor: default; }.viewer-controls select { padding: .35rem 1.5rem .35rem .5rem; border: 1px solid var(--rule); background: var(--paper); color: var(--ink); font: inherit; }.control-divider { width: 1px; height: 1.5rem; background: var(--rule); }.canvas-wrap { display: flex; min-height: min(78vh, 64rem); align-items: flex-start; justify-content: center; overflow: auto; padding: 1rem; background: #d5d7d8; }#pdf-canvas { display: block; max-width: none; background: #fff; box-shadow: 0 1px 5px rgb(0 0 0 / .2); }.viewer-status { margin: auto; color: var(--ink); }.viewer-fallback { margin: 0; padding: 1rem 1.25rem; color: var(--muted); font-size: .875rem; }
+  @media (max-width: 620px) { .viewer-bar { align-items: flex-start; flex-direction: column; }.viewer-links { flex-wrap: wrap; }.canvas-wrap { min-height: 70vh; } }
+  .canvas-wrap { display: block; max-height: 80vh; }
+  #pdf-canvas { margin-inline: auto; }
+  .viewer-status { color: #17212b; margin: 0 0 .75rem; text-align: center; }
 </style>
