@@ -8,6 +8,7 @@ const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 const nav = [
   { href: "/offering", label: "Offering" },
   { href: "/site-plan", label: "Site plan" },
+  { href: "/civil-drawings", label: "Civil Drawings" },
   { href: "/location", label: "Location" },
   { href: "/data-room", label: "Data room" },
 ];
@@ -117,7 +118,7 @@ const nav = [
   }
   .cta:hover { background: var(--brass); border-color: var(--brass); color: #fff; }
 
-  @media (max-width: 860px) {
+  @media (max-width: 1000px) {
     nav { order: 3; width: 100%; border-top: 1px solid var(--rule); }
     .site-header.transparent nav { border-top-color: rgb(255 255 255 / 0.16); }
     nav ul { gap: 1.25rem; padding-block: 0.7rem; overflow-x: auto; scrollbar-width: none; }
