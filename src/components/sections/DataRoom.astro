@@ -2,8 +2,14 @@
 import { getCollection } from "astro:content";
 import { seller, project } from "~/data/project";
 
-interface Props { full?: boolean }
-const { full = false } = Astro.props;
+interface Props {
+  full?: boolean;
+  /** 1 when this section is the entire page, so the page has a level-one heading */
+  level?: 1 | 2;
+}
+const { level = 2 } = Astro.props;
+const H: "h1" | "h2" = level === 1 ? "h1" : "h2";
+const H2: "h2" | "h3" = level === 1 ? "h2" : "h3";
 
 const docs = (await getCollection("documents")).map((d) => d.data);
 const order = ["Entitlement", "Civil & Survey", "Environmental", "Architectural", "Financial", "Title"] as const;
@@ -19,7 +25,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     <div class="head">
       <div>
         <p class="eyebrow">Due diligence</p>
-        <h2 id="dr-h" class="display-l">The whole file, on request.</h2>
+        <H id="dr-h" class="display-l">The whole file, on request.</H>
         <p class="lede-ground-dark">
           Everything filed with the City in August 2026, plus the engineering and architecture
           behind it. Tell us who you are and the package opens — the gate is so we know who is
@@ -28,7 +34,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
       </div>
 
       <form class="gate" data-gate method="post" action="/api/data-room" novalidate>
-        <h3 class="gate-h">Request access</h3>
+        <H2 class="gate-h">Request access</H2>
         <div class="fields">
           <label>
             <span>Name</span>
@@ -65,7 +71,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 
     <div class="manifest">
       <div class="manifest-head">
-        <h3 class="sub">In the package — {docs.length} documents</h3>
+        <H2 class="sub">In the package — {docs.length} documents</H2>
         <a class="pkg" href="/api/offering-package" data-gated>
           Offering package · single PDF
         </a>
@@ -140,7 +146,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     padding-bottom: clamp(3rem, 6vw, 5rem);
   }
   @media (max-width: 940px) { .head { grid-template-columns: 1fr; } }
-  h2 { max-width: 13ch; margin-bottom: 1.5rem; }
+  h1, h2 { max-width: 13ch; margin-bottom: 1.5rem; }
   .lede-ground-dark {
     font-size: 1.0625rem; line-height: 1.6; color: var(--on-slate-muted);
     max-width: 46ch; margin: 0;

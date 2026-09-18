@@ -1,5 +1,12 @@
 ---
 import { seller, project, offering } from "~/data/project";
+interface Props {
+  /** 1 when this section is the entire page, so the page has a level-one heading */
+  level?: 1 | 2;
+}
+const { level = 2 } = Astro.props;
+const H = `h${level}` as const;
+
 const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 
@@ -7,7 +14,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   <div class="shell grid">
     <div class="intro">
       <p class="eyebrow">Enquiries</p>
-      <h2 id="inq-h" class="display-l">Straight to the principal.</h2>
+      <H id="inq-h" class="display-l">Straight to the principal.</H>
       <p class="lede measure-tight">
         No brokerage sits between you and this deal. {seller.contactName} owns the property,
         filed the application and answers the phone.
@@ -114,7 +121,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     gap: clamp(2.5rem, 6vw, 6rem); align-items: start;
   }
   @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-  h2 { max-width: 12ch; margin-bottom: 1.5rem; }
+  h1, h2 { max-width: 12ch; margin-bottom: 1.5rem; }
   .lede { color: var(--muted); margin: 0 0 2.5rem; }
 
   .direct { margin: 0; border-top: 1px solid var(--rule); }
