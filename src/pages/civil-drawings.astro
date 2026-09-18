@@ -1,0 +1,80 @@
+---
+import Base from "~/layouts/Base.astro";
+import PageHead from "~/components/layout/PageHead.astro";
+
+const pdfPath = "/carr-blvd-preliminary-civil-plans-signed-2026-06-23.pdf";
+const pdfTitle = "Signed preliminary civil plans — June 23, 2026";
+---
+
+<Base
+  title="Civil Drawings — Carr Boulevard Townhomes"
+  description="View the signed preliminary civil plans for Carr Boulevard Townhomes, dated June 23, 2026."
+  path="/civil-drawings"
+>
+  <PageHead
+    eyebrow="Civil drawings"
+    title="Signed preliminary civil plans"
+    lede="Preliminary civil improvement plans signed June 23, 2026."
+  />
+
+  <section class="viewer-section section-tight">
+    <div class="shell">
+      <div class="viewer-card" data-reveal>
+        <div class="viewer-bar">
+          <p>{pdfTitle}</p>
+          <a href={pdfPath} target="_blank" rel="noopener">Open PDF in a new tab</a>
+        </div>
+        <iframe
+          src={pdfPath}
+          title={pdfTitle}
+          loading="lazy"
+          class="pdf-viewer"
+        ></iframe>
+        <p class="viewer-fallback">
+          If the document does not display in your browser,
+          <a href={pdfPath} target="_blank" rel="noopener">open the PDF in a new tab</a>
+          or <a href={pdfPath} download>download the signed plans</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .viewer-section { padding-top: 0; }
+  .viewer-card {
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    background: var(--paper-2);
+    box-shadow: var(--shadow-card);
+  }
+  .viewer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .viewer-bar p { margin: 0; font-size: 0.9375rem; font-weight: 500; }
+  .viewer-bar a, .viewer-fallback a { color: var(--brass-ink); }
+  .viewer-bar a { white-space: nowrap; font-size: 0.875rem; }
+  .pdf-viewer {
+    display: block;
+    width: 100%;
+    height: min(78vh, 64rem);
+    min-height: 36rem;
+    border: 0;
+    background: #fff;
+  }
+  .viewer-fallback {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  @media (max-width: 620px) {
+    .viewer-bar { align-items: flex-start; flex-direction: column; }
+    .pdf-viewer { height: 70vh; min-height: 28rem; }
+  }
+</style>
