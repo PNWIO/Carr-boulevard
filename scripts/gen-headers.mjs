@@ -40,6 +40,7 @@ const csp = [
   "img-src 'self' data:",
   "font-src 'self'",
   "connect-src 'self'",
+  "worker-src 'self'",
   "frame-src 'self' https://challenges.cloudflare.com",
   "form-action 'self'",
   "frame-ancestors 'none'",
