@@ -43,7 +43,16 @@ footer span:last-child{color:#a9bccd}
 <div class="k">${p.kicker}</div><h1>${p.title}</h1><div class="s">${p.sub}</div>
 <footer><span>LAUGHLIN DEVELOPMENT LLC</span><span>homesoncarr.com</span></footer>`;
 
-const browser = await chromium.launch(exe ? { executablePath: exe } : {});
+let browser;
+try {
+  browser = await chromium.launch(exe ? { executablePath: exe } : {});
+} catch (error) {
+  if (!pages.every((p) => fs.existsSync(path.join('public/og', `${p.out}.png`)))) {
+    throw error;
+  }
+  console.log('og: Chromium unavailable — keeping committed images');
+  process.exit(0);
+}
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, deviceScaleFactor: 1 });
 fs.mkdirSync('public/og', { recursive: true });
 for (const p of pages) {
