@@ -1,0 +1,89 @@
+---
+import { Image } from "astro:assets";
+import gabled from "~/assets/img/street-view-gabled.jpg";
+import modern from "~/assets/img/street-view-modern.jpg";
+import courtyard from "~/assets/img/street-view-courtyard.jpg";
+
+const views = [
+  {
+    src: gabled,
+    alt: "Street-level concept rendering of attached Carr Boulevard townhomes with gabled roofs and landscaped front yards.",
+  },
+  {
+    src: modern,
+    alt: "Street-level concept rendering of modern three-story Carr Boulevard townhomes along a curved sidewalk.",
+  },
+  {
+    src: courtyard,
+    alt: "Street-level concept rendering looking into a landscaped Carr Boulevard townhome court.",
+  },
+];
+---
+
+<section class="section street-views" aria-labelledby="street-views-heading">
+  <div class="shell">
+    <header class="heading" data-reveal>
+      <div>
+        <p class="eyebrow">Street views</p>
+        <h2 id="street-views-heading" class="display-l">A neighborhood at pedestrian scale.</h2>
+      </div>
+      <p class="lede">
+        Preliminary architectural concepts showing the intended variety of attached homes,
+        landscaped walks, and residential streetscapes.
+      </p>
+    </header>
+
+    <div class="gallery">
+      {views.map((view, index) => (
+        <figure data-reveal data-reveal-image style={`--reveal-delay: ${index * 90}ms`}>
+          <Image
+            src={view.src}
+            alt={view.alt}
+            widths={[480, 760, 1024]}
+            sizes="(max-width: 760px) 100vw, 33vw"
+            quality={78}
+            format="avif"
+          />
+        </figure>
+      ))}
+    </div>
+
+    <p class="note">
+      Illustrative design renderings only. Architecture, materials, landscaping, and site conditions
+      remain subject to final engineering, permitting, and builder selections.
+    </p>
+  </div>
+</section>
+
+<style>
+  .street-views { background: var(--paper-2); }
+  .heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 0.7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(2rem, 5vw, 4rem);
+  }
+  .heading h2 { max-width: 16ch; }
+  .heading .lede { margin: 0; color: var(--muted); }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2vw, 1.5rem);
+  }
+  figure { margin: 0; overflow: hidden; background: var(--paper); }
+  figure :global(img) { width: 100%; aspect-ratio: 1; object-fit: cover; }
+  .note {
+    max-width: 76ch;
+    margin: 1.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 800px) {
+    .heading { grid-template-columns: 1fr; }
+    .gallery { grid-template-columns: 1fr; }
+  }
+</style>
