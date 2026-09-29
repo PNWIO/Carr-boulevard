@@ -24,7 +24,7 @@ Node 22 or newer. Other commands:
 pnpm build               # production build into dist/ (+ generates dist/_headers)
 pnpm preview             # serve the built site
 pnpm check               # TypeScript + Astro typecheck
-pnpm verify              # assert every colour token pair meets WCAG 2.2 AA
+pnpm verify              # assert every color token pair meets WCAG 2.2 AA
 pnpm siteplan:rebuild    # regenerate the site plan from the civil DXF
 ```
 
@@ -121,7 +121,7 @@ is simply not enforced.
 
 | Missing | Behaviour |
 |---|---|
-| Everything | Site builds and deploys. Forms show "email Ian directly" and the enquiry falls back to a mailto link |
+| Everything | Site builds and deploys. Forms show "email Ian directly" and the inquiry falls back to a mailto link |
 | `HMAC_SECRET` | The gate captures the lead and tells the visitor Ian will send the package by email, instead of pretending access was granted |
 | `LEADS` | Leads are emailed but not stored |
 | `RESEND_API_KEY` | Leads are stored but not emailed |

@@ -14,7 +14,7 @@ const pages = [
   { out: 'site-plan', kicker: 'Site plan', title: 'Thirty-eight lots', sub: 'Drawn from the signed preliminary plat base drawing' },
   { out: 'location', kicker: 'Location and market', title: 'Five minutes<br>to the shipyard', sub: 'Naval Base Kitsap · 42,700 personnel' },
   { out: 'data-room', kicker: 'Due diligence', title: 'The whole file', sub: 'Entitlement · Civil · Environmental · Architectural · Title' },
-  { out: 'inquire', kicker: 'Enquiries', title: 'Straight to<br>the principal', sub: 'Laughlin Development LLC · No brokerage' },
+  { out: 'inquire', kicker: 'Inquiries', title: 'Straight to<br>the principal', sub: 'Laughlin Development LLC · No brokerage' },
   { out: '404', kicker: '404', title: 'Not part of<br>this offering', sub: 'homesoncarr.com' },
 ];
 

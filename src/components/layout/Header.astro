@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import { project } from "~/data/project";
+import laughlinLogo from "~/assets/img/laughlin-development-logo.png";
 
 interface Props { transparent?: boolean }
 const { transparent = false } = Astro.props;
@@ -17,14 +19,10 @@ const nav = [
 <header data-header class:list={["site-header", { transparent }]}>
   <div class="shell bar">
     <a href="/" class="mark">
-      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" fill="none">
-        <path d="M3 3h7v3.2H6.2V21H3V3Z" fill="currentColor" />
-        <path d="M21 21h-7v-3.2h3.8V3H21v18Z" fill="currentColor" />
-        <path d="M9.4 9.4h5.2v5.2H9.4z" fill="currentColor" opacity=".55" />
-      </svg>
+      <Image class="brand-logo" src={laughlinLogo} alt="" width={40} height={40} quality={90} />
       <span class="mark-text">
-        <strong>{project.shortName}</strong>
-        <span>{project.city}, {project.state}</span>
+        <strong>Laughlin Development</strong>
+        <span>{project.shortName} · {project.city}, WA</span>
       </span>
     </a>
 
@@ -38,7 +36,7 @@ const nav = [
       </ul>
     </nav>
 
-    <a class="cta" href="/inquire">Enquire</a>
+    <a class="cta" href="/inquire">Inquire</a>
   </div>
 </header>
 
@@ -75,6 +73,7 @@ const nav = [
     text-decoration: none;
     margin-right: auto;
   }
+  .mark :global(.brand-logo) { width: 2.5rem; height: 2.5rem; object-fit: cover; flex: none; }
   .mark-text { display: flex; flex-direction: column; line-height: 1.15; }
   .mark-text strong {
     font-family: var(--font-display);
