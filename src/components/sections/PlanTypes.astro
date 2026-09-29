@@ -2,12 +2,12 @@
 import { Image } from "astro:assets";
 import { planTypes, program } from "~/data/project";
 
-import a from "~/assets/img/plan-24x45-2car-front.jpg";
-import b from "~/assets/img/plan-20x45-1car-front.jpg";
-import c from "~/assets/img/plan-24x45-2car-rear.jpg";
-import d from "~/assets/img/plan-20x45-2car-rear.jpg";
-import e from "~/assets/img/plan-15x45-tandem-rear.jpg";
-import f from "~/assets/img/plan-24x30-1car.jpg";
+import a from "~/assets/img/plan-type-a-photoreal-v2.png";
+import b from "~/assets/img/plan-type-b-photoreal-v2.png";
+import c from "~/assets/img/plan-type-c-photoreal-v2.png";
+import d from "~/assets/img/plan-type-d-photoreal-v2.png";
+import e from "~/assets/img/plan-type-e-photoreal-v2.png";
+import f from "~/assets/img/plan-type-f-photoreal-v2.png";
 
 const images: Record<string, ImageMetadata> = {
   "24x45-2car-front": a,
@@ -27,8 +27,9 @@ const images: Record<string, ImageMetadata> = {
         <h2 id="plans-h" class="display-l">Six plan types across {program.totalUnits} homes.</h2>
       </div>
       <p class="note">
-        Elevations from the architecture set filed with the August 2026 application. Counts sum
-        to the full thirty-eight. Every plan is 2.5 bath.
+        Photorealistic studies based on the elevations filed with the August 2026 application.
+        Building geometry is unchanged; materials and landscaping are illustrative. Counts sum to
+        the full thirty-eight. Every plan is 2.5 bath.
       </p>
     </div>
 
@@ -41,7 +42,7 @@ const images: Record<string, ImageMetadata> = {
               alt={`${p.footprint} plan type ${p.id}: ${p.beds} bedroom attached home with ${p.garage.toLowerCase()}.`}
               widths={[420, 720, 1040]}
               sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 30vw"
-              quality={74}
+              quality={80}
               format="avif"
               densities={undefined}
             />

@@ -1,0 +1,38 @@
+<section class="section scope" aria-labelledby="scope-h">
+  <div class="shell">
+    <p class="eyebrow">Execution boundary</p>
+    <h2 id="scope-h" class="display-l">What is done. What remains.</h2>
+    <div class="grid">
+      <article>
+        <p class="num">01</p><h3>Seller work to date</h3>
+        <ul>
+          <li>Four-parcel assemblage and 38-home site program</li>
+          <li>Preliminary plat and site development permit submitted August 5, 2026</li>
+          <li>Signed civil set, survey, geotechnical, stormwater, traffic, tree and photometric work</li>
+          <li>Six-type architecture and landscape package</li>
+        </ul>
+      </article>
+      <article>
+        <p class="num">02</p><h3>Buyer work after approval</h3>
+        <ul>
+          <li>Satisfy final City conditions and complete post-approval engineering</li>
+          <li>Secure civil construction and individual building permits</li>
+          <li>Finance, build and sell or operate the vertical program</li>
+          <li>Independently verify all plans, costs, conditions and market assumptions</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  h2 { max-width: 13ch; margin-bottom: 2.5rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); }
+  article { padding: clamp(1.5rem, 4vw, 3rem); }
+  article + article { border-left: 1px solid var(--rule); }
+  .num { color: var(--brass-ink); font: 400 1.4rem var(--font-display); margin: 0 0 1rem; }
+  h3 { font: 400 clamp(1.4rem, 3vw, 2rem) var(--font-display); margin: 0 0 1.25rem; }
+  ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+  li { padding: .35rem 0; line-height: 1.55; }
+  @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } article + article { border-left: 0; border-top: 1px solid var(--rule); } }
+</style>

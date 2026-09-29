@@ -1,0 +1,42 @@
+---
+const items = [
+  ["Is the plat approved?", "No. The preliminary plat and site development permit were submitted August 5, 2026 and remain under City of Bremerton review. Closing is conditioned on site plan approval."],
+  ["Are the homes fee-simple?", "That is the filed design intent. The program uses a unit-lot subdivision for 38 fee-simple attached single-family homes, subject to City review and final conditions."],
+  ["What is the frontage-parcel option?", "Parcel 1 is a 17,238-SF General Commercial frontage parcel planned for six homes. The seller will consider its separate disposition from the 32-home balance."],
+  ["What are the finished square footages?", "The public plan matrix shows verified building footprints only. Finished floor areas are not stated in the source record; full architectural sheets are available in the data room for buyer verification."],
+  ["Is a broker involved?", "No. Laughlin Development LLC owns the property and is offering it directly. Enquiries go to principal Ian Laughlin."],
+];
+---
+
+<section class="section faq" aria-labelledby="faq-h">
+  <div class="shell layout">
+    <div>
+      <p class="eyebrow">Buyer questions</p>
+      <h2 id="faq-h" class="display-l">The first five answers.</h2>
+      <a class="cta" href="/inquire">Ask the principal →</a>
+    </div>
+    <div class="items">
+      {items.map(([question, answer], i) => (
+        <details open={i === 0}>
+          <summary>{question}</summary>
+          <p>{answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq { background: var(--paper-2); }
+  .layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: clamp(2rem, 7vw, 7rem); }
+  h2 { max-width: 10ch; margin-bottom: 1.5rem; }
+  .cta { color: var(--brass-ink); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; }
+  details { border-top: 1px solid var(--rule); padding: 1.1rem 0; }
+  details:last-child { border-bottom: 1px solid var(--rule); }
+  summary { cursor: pointer; list-style: none; font: 400 1.25rem var(--font-display); display: flex; justify-content: space-between; gap: 1rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--brass-ink); }
+  details[open] summary::after { content: "−"; }
+  details p { color: var(--muted); line-height: 1.65; max-width: 66ch; margin: .9rem 0 .2rem; }
+  @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+</style>

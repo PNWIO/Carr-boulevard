@@ -41,8 +41,12 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
             <input name="name" type="text" autocomplete="name" required />
           </label>
           <label>
-            <span>Company</span>
+            <span>Firm</span>
             <input name="company" type="text" autocomplete="organization" required />
+          </label>
+          <label>
+            <span>Role</span>
+            <input name="role" type="text" autocomplete="organization-title" required />
           </label>
           <label>
             <span>Email</span>
@@ -50,7 +54,11 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
           </label>
           <label>
             <span>Phone</span>
-            <input name="phone" type="tel" autocomplete="tel" />
+            <input name="phone" type="tel" autocomplete="tel" required />
+          </label>
+          <label class="wide">
+            <span>Comment <em>optional</em></span>
+            <textarea name="comment" rows="2" placeholder="What are you evaluating?"></textarea>
           </label>
         </div>
         <label class="ack">
@@ -164,12 +172,15 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
     display: block; font-size: 0.6875rem; letter-spacing: 0.1em;
     text-transform: uppercase; color: var(--on-slate-muted); margin-bottom: 0.4rem;
   }
-  input[type="text"], input[type="email"], input[type="tel"] {
+  .wide { grid-column: 1 / -1; }
+  label em { font-style: normal; text-transform: none; letter-spacing: 0; }
+  input[type="text"], input[type="email"], input[type="tel"], textarea {
     width: 100%; font: inherit; font-size: 0.9375rem;
     background: transparent; color: var(--on-slate);
     border: 0; border-bottom: 1px solid var(--rule-invert);
     padding: 0.5rem 0; border-radius: 0;
   }
+  textarea { resize: vertical; }
   input:focus { outline: none; border-bottom-color: var(--brass); }
   input:focus-visible { outline: 2px solid var(--brass); outline-offset: 3px; }
 

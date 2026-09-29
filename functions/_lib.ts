@@ -32,6 +32,7 @@ export type Lead = {
   company: string;
   email: string;
   phone: string;
+  role?: string;
   buyerType?: string;
   message?: string;
 };
@@ -53,8 +54,9 @@ export function readLead(body: Record<string, unknown>, opts: { requireAck?: boo
     company,
     email,
     phone,
+    role: s(body.role, 120) || undefined,
     buyerType: s(body.buyerType, 40) || undefined,
-    message: s(body.message, 4000) || undefined,
+    message: s(body.message ?? body.comment, 4000) || undefined,
   };
 }
 

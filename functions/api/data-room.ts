@@ -21,8 +21,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   await storeLead(env, "data-room", lead, request);
   await notify(env, `Carr Blvd — data room access: ${lead.company}`, [
     `${lead.name}, ${lead.company}`,
+    lead.role || "(role not provided)",
     lead.email,
     lead.phone || "(no phone)",
+    lead.message || "(no comment)",
     "",
     "Granted access to the Carr Boulevard data room.",
   ]);
