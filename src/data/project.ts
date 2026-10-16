@@ -143,7 +143,7 @@ export const offering = {
   priceIsOnRequest: true,
   structure:
     "Offers considered on the land as-is, with entitlements, or vertical-ready.",
-  closingCondition: "Closing upon site plan approval",
+  closingCondition: "Closing at site plan approval (preferred) or preliminary plat approval",
   closingNote:
     "The seller carries the entitlement to approval; the buyer takes construction permits and post-approval conditions.",
   assignment: "Assignment allowed with seller consent",
@@ -261,9 +261,9 @@ export const glance = [
   { figure: "R-10", label: "Low density residential + GC frontage" },
   { figure: "Aug 2026", label: "Preliminary plat and site development permit submitted" },
   { figure: "6", label: "Plan types, 2 and 3 bedroom" },
-  { figure: "32%", label: "Open space — 51,922 SF against 15% required" },
+  { figure: "32%", label: "Open space — 51,922 SF of the 160,425 SF on parcels 2–4, against 15% (24,064 SF) required" },
   { figure: "25", label: "Guest parking stalls" },
-  { figure: "On request", label: "Asking price · close on site plan approval" },
+  { figure: "On request", label: "Asking price · close at site plan or preliminary plat approval" },
 ] as const;
 
 /* -------------------------------------------------------------------------- */

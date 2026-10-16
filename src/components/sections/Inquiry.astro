@@ -101,6 +101,12 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
           btn.hidden = true;
           msg.dataset.state = "ok";
           msg.textContent = "Received. Ian will come back to you directly, usually the same day.";
+        } else if (res.status === 503) {
+          const f = Object.fromEntries(new FormData(form));
+          const lines = [`Name: ${f.name || ""}`, `Company: ${f.company || ""}`, `Buyer type: ${f.buyerType || ""}`, `Email: ${f.email || ""}`, `Phone: ${f.phone || ""}`, "", f.message || ""];
+          msg.dataset.state = "err";
+          msg.textContent = "Online inquiries aren't connected yet — your email app is opening with your details. Send it and it reaches Ian directly.";
+          window.location.href = `mailto:ian@laughlindevelopmentllc.com?subject=${encodeURIComponent("Carr Boulevard — inquiry")}&body=${encodeURIComponent(lines.join("\n"))}`;
         } else {
           msg.dataset.state = "err";
           msg.textContent = data.message || "That didn't send. Email ian@laughlindevelopmentllc.com and it'll reach him.";

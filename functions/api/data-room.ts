@@ -10,6 +10,11 @@ import {
  * not be in the bucket at all.
  */
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  // Without a lead store or email delivery, nothing would reach Ian. Say so, so the
+  // page falls back to the visitor's email instead of claiming the request was sent.
+  if (!env.LEADS && !(env.RESEND_API_KEY && env.LEAD_NOTIFY_TO && env.LEAD_NOTIFY_FROM)) {
+    return bad("Online requests are not connected yet. Your email app will open with your details — send it and Ian will reply with the package.", 503);
+  }
   const body = await parseBody(request);
 
   const ok = await verifyTurnstile(env, body["cf-turnstile-response"], request.headers.get("cf-connecting-ip"));

@@ -133,6 +133,12 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
           msg.textContent = "Access granted — the documents below are now open to you. A copy of the package link is on its way to your inbox.";
           form.querySelectorAll("[data-gated]").forEach((el) => el.removeAttribute("data-gated"));
           document.querySelectorAll(".lock").forEach((l) => { if (l.dataset.gated === "true") l.textContent = "Open"; });
+        } else if (res.status === 503) {
+          const f = Object.fromEntries(new FormData(form));
+          const lines = [`Name: ${f.name || ""}`, `Firm: ${f.company || ""}`, `Role: ${f.role || ""}`, `Email: ${f.email || ""}`, `Phone: ${f.phone || ""}`, "", f.comment || "", "", "I acknowledge the materials are confidential and provided without representation or warranty."];
+          msg.dataset.state = "err";
+          msg.textContent = data.message || "Your email app is opening with your details — send it and Ian will reply with the package.";
+          window.location.href = `mailto:ian@laughlindevelopmentllc.com?subject=${encodeURIComponent("Carr Boulevard — due diligence request")}&body=${encodeURIComponent(lines.join("\n"))}`;
         } else {
           msg.dataset.state = "err";
           msg.textContent = data.message || "That didn't go through. Email Ian directly and he'll send the package.";
