@@ -110,11 +110,17 @@ export const program = {
  * Counts sum to 38. Footprint dimensions are footprints, not finished area —
  * finished square footage is not stated in any document in the record.
  */
+/**
+ * Lot assignments follow the plan-type key on the architecture site sheet
+ * ("Carr Blvd — Attached SFR, 38 units", Aug 2026). Lots 29–32 are tagged on that sheet in a
+ * way that conflicts with the civil DXF footprints; they are assigned here so every lot keeps
+ * its civil footprint and the six plan counts (10/12/4/4/6/2) hold. See NEEDS-FROM-IAN.md.
+ */
 export const planTypes = [
-  { id: "A", footprint: "24′ × 45′", w: 24, d: 45, beds: 3, baths: 2.5, garage: "2-car garage", units: 10, image: "24x45-2car-front", lots: [1, 4, 5, 8, 9, 12, 13, 16, 17, 20].map((lot) => ({ parcel: 234, lot })) },
-  { id: "B", footprint: "20′ × 45′", w: 20, d: 45, beds: 3, baths: 2.5, garage: "1-car garage", units: 12, image: "20x45-1car-front", lots: [2, 3, 6, 7, 10, 11, 14, 15, 18, 19, 22, 23].map((lot) => ({ parcel: 234, lot })) },
-  { id: "C", footprint: "24′ × 45′", w: 24, d: 45, beds: 3, baths: 2.5, garage: "2-car rear garage", units: 4, image: "24x45-2car-rear", lots: [24, 25, 30, 31].map((lot) => ({ parcel: 234, lot })) },
-  { id: "D", footprint: "20′ × 45′", w: 20, d: 45, beds: 3, baths: 2.5, garage: "2-car rear garage", units: 4, image: "20x45-2car-rear", lots: [26, 27, 29, 32].map((lot) => ({ parcel: 234, lot })) },
+  { id: "A", footprint: "24′ × 45′", w: 24, d: 45, beds: 3, baths: 2.5, garage: "2-car garage", units: 10, image: "24x45-2car-front", lots: [1, 4, 5, 8, 9, 12, 24, 25, 30, 31].map((lot) => ({ parcel: 234, lot })) },
+  { id: "B", footprint: "20′ × 45′", w: 20, d: 45, beds: 3, baths: 2.5, garage: "1-car garage", units: 12, image: "20x45-1car-front", lots: [2, 3, 6, 7, 10, 11, 22, 23, 26, 27, 29, 32].map((lot) => ({ parcel: 234, lot })) },
+  { id: "C", footprint: "24′ × 45′", w: 24, d: 45, beds: 3, baths: 2.5, garage: "2-car rear garage", units: 4, image: "24x45-2car-rear", lots: [13, 16, 17, 20].map((lot) => ({ parcel: 234, lot })) },
+  { id: "D", footprint: "20′ × 45′", w: 20, d: 45, beds: 3, baths: 2.5, garage: "2-car rear garage", units: 4, image: "20x45-2car-rear", lots: [14, 15, 18, 19].map((lot) => ({ parcel: 234, lot })) },
   { id: "E", footprint: "15′ × 45′", w: 15, d: 45, beds: 2, baths: 2.5, garage: "2-car tandem rear garage", units: 6, image: "15x45-tandem-rear", lots: [1, 2, 3, 4, 5, 6].map((lot) => ({ parcel: 1, lot })) },
   { id: "F", footprint: "24′ × 30′", w: 24, d: 30, beds: 2, baths: 2.5, garage: "1-car garage", units: 2, image: "24x30-1car", note: "plus office", lots: [21, 28].map((lot) => ({ parcel: 234, lot })) },
 ] as const;

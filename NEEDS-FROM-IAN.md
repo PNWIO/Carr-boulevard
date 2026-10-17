@@ -24,18 +24,15 @@ number the seller can't produce a drawing for.
 
 ---
 
-### Per-lot garage orientation
-**Where it shows:** the site plan and unit schedule group lots by *footprint family*
-(24′×45′, 20′×45′, 15′×45′, 24′×30′) rather than by the six plan types, because the civil
-DXF records each lot's footprint but not whether it takes the front-garage or rear-garage
-variant. The mix table carries the split (10 front / 4 rear on the 24′×45′; 12 front / 4 rear
-on the 20′×45′).
+### Per-lot plan types — resolved Oct 16, 2026 (one item to confirm)
+The architecture site sheet ("Carr Blvd — Attached SFR, 38 units", Aug 2026) tags every lot with
+its plan type. The site's plan-type lot lists now follow it (they previously listed lots 13/16/17/20
+as front-garage A and 24/25 as rear-garage C, which the sheet contradicts).
 
-**What's needed:** if the architecture set assigns plan types to specific lot numbers, that
-list turns the site plan from "footprint by lot" into "plan type by lot" — a materially
-better exhibit.
-
-**Where it goes:** `src/content/units.json` → add `"plan": "A"` per lot.
+**Confirm:** on that sheet lots 29 and 32 carry the A tag and lots 30 and 31 the C tag, but the
+civil DXF draws 29 and 32 as 20′×45′ footprints, and those tags would make 6 rear-garage C units
+against the sheet's own legend of 4. The site assigns 29/32 = B and 30/31 = A, the only assignment
+that keeps every civil footprint and the 10/12/4/4/6/2 mix. Ask the architect which is right.
 
 ---
 
