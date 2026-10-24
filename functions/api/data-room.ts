@@ -1,6 +1,6 @@
 import {
   bad, json, parseBody, readLead, verifyTurnstile, signAccess,
-  cookieHeader, storeLead, notify, type Env,
+  cookieHeader, storeLead, notify, forwardLead, hasLegacyDelivery, type Env,
 } from "../_lib";
 
 /**
@@ -12,7 +12,7 @@ import {
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   // Without a lead store or email delivery, nothing would reach Ian. Say so, so the
   // page falls back to the visitor's email instead of claiming the request was sent.
-  if (!env.LEADS && !(env.RESEND_API_KEY && env.LEAD_NOTIFY_TO && env.LEAD_NOTIFY_FROM)) {
+  if (!env.LEAD_INBOX && !hasLegacyDelivery(env)) {
     return bad("Online requests are not connected yet. Your email app will open with your details — send it and Ian will reply with the package.", 503);
   }
   const body = await parseBody(request);
@@ -23,6 +23,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const lead = readLead(body, { requireAck: true });
   if (typeof lead === "string") return bad(lead);
 
+  // Primary path: the lead-inbox Worker (D1 + email). KV/Resend stay as an optional second path.
+  const forwarded = await forwardLead(env, "homesoncarr", "data-room", lead, request);
   await storeLead(env, "data-room", lead, request);
   await notify(env, `Carr Blvd — data room access: ${lead.company}`, [
     `${lead.name}, ${lead.company}`,
@@ -33,6 +35,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     "",
     "Granted access to the Carr Boulevard data room.",
   ]);
+
+  // storeLead/notify swallow their errors, so "delivered" is the relay result, or a configured legacy path.
+  if (!forwarded && !hasLegacyDelivery(env)) {
+    return bad("Online requests are not connected yet. Your email app will open with your details — send it and Ian will reply with the package.", 503);
+  }
 
   const token = await signAccess(env, lead.email);
   if (!token) {

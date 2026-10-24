@@ -1,6 +1,8 @@
 /// <reference types="@cloudflare/workers-types" />
 
 export interface Env {
+  /** Service binding to the shared `lead-inbox` Worker (stores the lead in D1 and emails Ian). */
+  LEAD_INBOX?: Fetcher;
   LEADS?: KVNamespace;
   DOCS?: R2Bucket;
   HMAC_SECRET?: string;
@@ -127,8 +129,76 @@ export const readCookie = (req: Request, name: string): string | undefined =>
     ?.slice(name.length + 1);
 
 /* ------------------------------------------------------------------ */
-/* Persistence + notification — both optional, both fail soft          */
+/* Primary delivery: hand the lead to the lead-inbox Worker            */
 /* ------------------------------------------------------------------ */
+
+export type LeadSite = "homesoncarr" | "dauntlessplace";
+
+/**
+ * Posts the lead to the shared `lead-inbox` Worker through the LEAD_INBOX service binding.
+ * Resolves true only when the relay answers 200 with `{ ok: true }`, i.e. the lead is safe.
+ * Any other status, a thrown error, a timeout or a missing binding resolves false so the
+ * caller can fall back to the visitor's email app instead of losing the lead.
+ */
+export async function forwardLead(
+  env: Env,
+  site: LeadSite,
+  kind: string,
+  lead: Lead,
+  request: Request,
+): Promise<boolean> {
+  if (!env.LEAD_INBOX) return false;
+  try {
+    let page: string | undefined;
+    const referer = request.headers.get("referer");
+    if (referer) {
+      try {
+        page = new URL(referer).pathname || undefined;
+      } catch {
+        page = undefined;
+      }
+    }
+    const payload = {
+      site,
+      form: kind,
+      name: lead.name || undefined,
+      email: lead.email || undefined,
+      phone: lead.phone || undefined,
+      company: lead.company || undefined,
+      role: lead.role || undefined,
+      buyerType: lead.buyerType || undefined,
+      message: lead.message || undefined,
+      page,
+    };
+    const res = await env.LEAD_INBOX.fetch("https://lead-inbox/lead", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (res.status !== 200) {
+      console.error(`lead-inbox relay failed: HTTP ${res.status} (${site}/${kind})`);
+      return false;
+    }
+    const data = (await res.json().catch(() => null)) as { ok?: unknown } | null;
+    if (!data || data.ok !== true) {
+      console.error(`lead-inbox relay failed: response ok !== true (${site}/${kind})`);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error(`lead-inbox relay failed: ${err instanceof Error ? err.message : String(err)} (${site}/${kind})`);
+    return false;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Optional second path: KV storage + Resend email — both fail soft    */
+/* ------------------------------------------------------------------ */
+
+/** True when the older KV and/or Resend paths are configured. */
+export const hasLegacyDelivery = (env: Env): boolean =>
+  !!env.LEADS || !!(env.RESEND_API_KEY && env.LEAD_NOTIFY_TO && env.LEAD_NOTIFY_FROM);
 
 export async function storeLead(env: Env, kind: string, lead: Lead, req: Request): Promise<void> {
   if (!env.LEADS) return;
