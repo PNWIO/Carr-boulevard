@@ -98,6 +98,8 @@ const orgLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(realEstateLd)} is:inline />
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} is:inline />
+    {/* Cloudflare Turnstile (bot check on the inquiry and data-room forms). Loaded once per page; allowed by the CSP. */}
+    <script is:inline async defer src="https://challenges.cloudflare.com/turnstile/v0/api.js"></script>
   </head>
   <body>
     <a
