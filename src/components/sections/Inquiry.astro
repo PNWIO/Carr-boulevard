@@ -7,7 +7,8 @@ interface Props {
 const { level = 2 } = Astro.props;
 const H = `h${level}` as const;
 
-const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+// Turnstile site key is public; the env var overrides it.
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAFp6E5buOKVuLxE2";
 ---
 
 <section id="inquire" class="section inquiry" aria-labelledby="inq-h">
@@ -77,6 +78,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
   </div>
 </section>
 
+{siteKey ? <script is:inline>{`if(!document.querySelector('script[src^="https://challenges.cloudflare.com/turnstile/v0/api.js"]')){var t=document.createElement("script");t.src="https://challenges.cloudflare.com/turnstile/v0/api.js";t.async=true;t.defer=true;document.head.appendChild(t);}`}</script> : null}
 <script is:inline>
   (() => {
     const form = document.querySelector("[data-inquiry]");
@@ -115,6 +117,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         msg.dataset.state = "err";
         msg.textContent = "That didn't send. Email ian@laughlindevelopmentllc.com and it'll reach him.";
       } finally {
+        if (window.turnstile && !form.querySelector(".fields")?.hidden) { try { window.turnstile.reset(); } catch {} }
         btn.disabled = false;
       }
     });

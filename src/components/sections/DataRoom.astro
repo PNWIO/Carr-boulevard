@@ -17,7 +17,8 @@ const grouped = order
   .map((cat) => ({ cat, items: docs.filter((d) => d.category === cat) }))
   .filter((g) => g.items.length);
 
-const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
+// Turnstile site key is public; the env var overrides it.
+const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "0x4AAAAAAFp6E5buOKVuLxE2";
 ---
 
 <section id="data-room" class="section data-room ground-dark" aria-labelledby="dr-h">
@@ -147,6 +148,7 @@ const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
         msg.dataset.state = "err";
         msg.textContent = "That didn't go through. Email Ian directly and he'll send the package.";
       } finally {
+        if (window.turnstile && !form.querySelector(".fields")?.hidden) { try { window.turnstile.reset(); } catch {} }
         btn.disabled = false;
       }
     });
