@@ -10,6 +10,7 @@ import path from 'node:path';
 
 const pages = [
   { out: 'index', kicker: 'Bremerton, Washington', title: 'Carr Boulevard<br>Townhomes', sub: '38 fee-simple attached homes · 4.08 acres · R-10 + GC' },
+  { out: 'overview', kicker: 'Overview', title: 'The site in<br>three dimensions', sub: 'Interactive 3D model from the topographic survey' },
   { out: 'offering', kicker: 'Offering summary', title: 'Site, program<br>and terms', sub: 'Preliminary plat submitted August 2026 · Close on approval' },
   { out: 'site-plan', kicker: 'Site plan', title: 'Thirty-eight lots', sub: 'Drawn from the signed preliminary plat base drawing' },
   { out: 'location', kicker: 'Location and market', title: 'Five minutes<br>to the shipyard', sub: 'Naval Base Kitsap · 42,700 personnel' },

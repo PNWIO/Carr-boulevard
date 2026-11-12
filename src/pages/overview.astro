@@ -1,0 +1,161 @@
+---
+import Base from "~/layouts/Base.astro";
+import PageHead from "~/components/layout/PageHead.astro";
+import { site } from "~/data/project";
+
+const layers = [
+  { key: "terrain", label: "Ground", swatch: "#8aa06a" },
+  { key: "buildings", label: "Buildings", swatch: "#d6d1c8" },
+  { key: "paving", label: "Drives", swatch: "#9aa0a8" },
+  { key: "landscape", label: "Landscape", swatch: "#8fae6b" },
+  { key: "trees", label: "Trees", swatch: "#4e7f46" },
+  { key: "walls", label: "Walls", swatch: "#a8a39a" },
+  { key: "pond", label: "Pond", swatch: "#5b87b8" },
+];
+---
+
+<Base
+  title="Overview — interactive 3D site model | Carr Boulevard Townhomes"
+  description="An interactive 3D model of the Carr Boulevard site, built from the project topographic survey and the civil base drawing: existing grade, 38 homes, drives, the stormwater pond and retained trees."
+  path="/overview"
+>
+  <PageHead
+    eyebrow="Overview"
+    title="The site in three dimensions."
+    lede={`Ground is the project topographic survey. The land falls about 49 feet across the developed area of the ${site.totalAcres}-acre site, and the model carries on to the edge of the survey. Buildings, drives, the pond and the retained trees are the civil base drawing. Drag to orbit.`}
+  />
+
+  <section class="shell model-wrap" data-reveal>
+    <div id="carr-model" class="model">
+      <div class="stage" data-stage>
+        <p class="status" data-model-status>Loading the 3D model…</p>
+      </div>
+
+      <div class="panel controls">
+        <div class="row">
+          <label for="exag">Vertical exaggeration</label>
+          <b data-exag-out>1.0×</b>
+        </div>
+        <input id="exag" type="range" min="1" max="4" step="0.5" value="1" data-exag />
+
+        <div class="row">
+          <label for="bht">Building height (assumed)</label>
+          <b data-height-out>24 ft</b>
+        </div>
+        <input id="bht" type="range" min="10" max="40" step="2" value="24" data-height />
+
+        <div class="toggles">
+          {layers.map((l) => (
+            <label class="tg">
+              <input type="checkbox" checked data-layer={l.key} />
+              <span class="sw" style={`background:${l.swatch}`}></span>{l.label}
+            </label>
+          ))}
+        </div>
+
+        <button type="button" class="reset" data-reset>Reset view</button>
+      </div>
+
+      <div class="panel legend">
+        <span class="cap">Existing grade</span>
+        <div class="bar"></div>
+        <div class="ends"><span data-lo>246 ft</span><span data-hi>302 ft</span></div>
+      </div>
+
+      <div class="panel compass" aria-hidden="true">
+        <svg viewBox="-50 -50 100 100" width="40" height="40">
+          <g data-needle>
+            <polygon points="0,-34 9,10 0,2 -9,10" fill="#9a6a3c"></polygon>
+            <polygon points="0,34 9,-10 0,-2 -9,-10" fill="#c9ccd1"></polygon>
+            <text x="0" y="-36" text-anchor="middle" font-size="17" fill="currentColor">N</text>
+          </g>
+        </svg>
+      </div>
+
+      <p class="panel hint">Drag to orbit · scroll to zoom · shift-drag to pan</p>
+    </div>
+
+    <p class="caveat">
+      <strong>What is survey and what is not.</strong> Existing grade comes from the project
+      topographic survey; the building footprints, drives, parking, landscape
+      areas, the stormwater pond and the retained trees come from the civil base drawing.
+      Building <em>heights</em> are not in the civil drawings — the base is two-dimensional — so
+      every home is shown at one assumed height, adjustable above. Massing is indicative, not a
+      design, and this model is not a survey document. The modelled ground extends past the
+      parcel to the limit of the topographic survey, so it shows neighbouring land as well. The
+      <a href="/site-plan">site plan</a> and <a href="/civil-drawings">civil drawings</a> govern.
+    </p>
+  </section>
+
+  <script is:inline type="module" src="/model/carr-model.js"></script>
+</Base>
+
+<style>
+  .model-wrap { padding-block: clamp(1.5rem, 4vw, 3rem); }
+  .model {
+    position: relative;
+    border: 1px solid var(--rule);
+    background: #eef0f2;
+    overflow: hidden;
+  }
+  .stage { width: 100%; aspect-ratio: 16 / 9; min-height: 340px; max-height: 78vh; }
+  .stage :global(canvas) { display: block; }
+  .status {
+    position: absolute; inset: 0; display: grid; place-content: center;
+    margin: 0; font-size: 0.875rem; color: var(--muted); text-align: center;
+    padding: 2rem; max-width: 34rem; margin-inline: auto;
+  }
+  .panel {
+    position: absolute;
+    background: color-mix(in srgb, var(--paper) 94%, transparent);
+    border: 1px solid var(--rule);
+    backdrop-filter: saturate(140%) blur(6px);
+  }
+  .controls { top: 0.875rem; left: 0.875rem; width: 14.25rem; padding: 0.875rem 0.9375rem; }
+  .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 0.6875rem; color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .row b { color: inherit; font-weight: 600; font-variant-numeric: tabular-nums; font-size: 0.75rem; }
+  .controls input[type="range"] { width: 100%; margin: 0 0 0.7rem; accent-color: var(--brass); }
+  .toggles {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.1rem 0.6rem;
+    border-top: 1px solid var(--rule); padding-top: 0.6rem; margin-top: 0.2rem;
+  }
+  .tg { display: flex; align-items: center; gap: 0.35rem; font-size: 0.6875rem; cursor: pointer; }
+  .tg input { accent-color: var(--brass); margin: 0; flex: none; }
+  .sw { width: 0.5rem; height: 0.5rem; border-radius: 1px; flex: none; }
+  .reset {
+    width: 100%; margin-top: 0.7rem; padding: 0.4rem; font: inherit; font-size: 0.6875rem;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    background: transparent; border: 1px solid var(--rule); color: inherit;
+  }
+  .reset:hover { background: var(--brass); border-color: var(--brass); color: #fff; }
+  .legend { bottom: 0.875rem; left: 0.875rem; padding: 0.6rem 0.75rem; width: 10.5rem; }
+  .cap { font-size: 0.625rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .bar {
+    height: 0.4rem; margin: 0.4rem 0 0.25rem;
+    background: linear-gradient(90deg, #3f6a4e, #7a9a5c, #c3b579, #efe7dc);
+  }
+  .ends {
+    display: flex; justify-content: space-between;
+    font-size: 0.625rem; color: var(--muted); font-variant-numeric: tabular-nums;
+  }
+  .compass { top: 0.875rem; right: 0.875rem; padding: 0.4rem; line-height: 0; }
+  .hint {
+    bottom: 0.875rem; right: 0.875rem; margin: 0; padding: 0.45rem 0.7rem;
+    font-size: 0.6875rem; color: var(--muted);
+  }
+  .caveat {
+    margin: 1rem 0 0; max-width: 56ch; font-size: 0.8125rem;
+    line-height: 1.6; color: var(--muted);
+  }
+  .caveat strong { color: inherit; }
+
+  @media (max-width: 860px) {
+    .stage { aspect-ratio: 4 / 3; }
+    .controls { position: static; width: auto; border: 0; border-top: 1px solid var(--rule); backdrop-filter: none; }
+    .legend, .hint, .compass { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .panel { backdrop-filter: none; } }
+</style>
